@@ -1,9 +1,7 @@
-package com.virtualtek.todo_list_backend.security.config;
-
+package com.virtualtek.todo_list_backend.security.jwt;
+/*
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.virtualtek.todo_list_backend.model.entities.User;
-import com.virtualtek.todo_list_backend.security.AuthCredentials;
-import com.virtualtek.todo_list_backend.security.TokenUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -53,3 +50,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         super.successfulAuthentication(request, response, chain, authResult);
     }
 }
+*/

@@ -1,11 +1,12 @@
 package com.virtualtek.todo_list_backend.model.entities;
-
+/*
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "authority")
+
+
 public class Authority implements GrantedAuthority {
 
     @Id
@@ -47,3 +48,5 @@ public class Authority implements GrantedAuthority {
         this.user = user;
     }
 }
+
+ */

@@ -2,16 +2,16 @@ package com.virtualtek.todo_list_backend.model.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+//Spring security
+//public class User implements UserDetails {
+public class User{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,12 +79,16 @@ public class User implements UserDetails {
                 '}';
     }
 
+    /*
+    Spring security
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         List<GrantedAuthority>roles=new ArrayList<>();
         roles.add(new Authority("ROLE_USER"));
         return roles;
+
+        //return Collections.emptyList();
     }
 
     @Override
@@ -116,4 +120,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+     */
 }

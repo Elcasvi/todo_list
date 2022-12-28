@@ -1,12 +1,13 @@
 package com.virtualtek.todo_list_backend.security.config;
 
-
-import com.virtualtek.todo_list_backend.model.entities.User;
-import com.virtualtek.todo_list_backend.security.UserDetailServiceImplementation;
+/*
+import com.virtualtek.todo_list_backend.security.jwt.JwtAuthenticationFilter;
+import com.virtualtek.todo_list_backend.security.jwt.JwtAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.OPTIONS;
+
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig{
@@ -26,6 +29,9 @@ public class SecurityConfig{
     @Autowired
     private final UserDetailsService userDetailsService;//Clase que me da Spring
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
+    @Autowired
+    CustomPasswordEncoder customPasswordEncoder;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,AuthenticationManager authenticationManager) throws Exception {
 
@@ -33,24 +39,19 @@ public class SecurityConfig{
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-
         return http
                 .csrf().disable()
-                .authorizeHttpRequests()
-                .anyRequest()
-                .authenticated()
+                .authorizeHttpRequests((requests)->requests
+                        .requestMatchers(OPTIONS).permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .anyRequest().authenticated())
+                .httpBasic()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(jwtAuthenticationFilter)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }
-
-    PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -58,7 +59,7 @@ public class SecurityConfig{
     {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder())
+                .passwordEncoder(customPasswordEncoder.getPasswordEncoder())
                 .and()
                 .build();
     }
@@ -67,3 +68,4 @@ public class SecurityConfig{
         System.out.println("pass: "+new BCryptPasswordEncoder().encode("carlos"));
     }
 }
+*/
