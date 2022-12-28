@@ -3,5 +3,8 @@ package com.virtualtek.todo_list_backend.model.repositories;
 import com.virtualtek.todo_list_backend.model.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface user_repository extends JpaRepository<User,Long> {
+import java.util.Optional;
+
+public interface User_repository extends JpaRepository<User,Long> {
+    Optional<User>findByEmail(String email);
 }
