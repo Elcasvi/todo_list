@@ -20,9 +20,8 @@ public class Category {
     {
     }
 
-    public Category(String category_type, List<Task> tasks) {
+    public Category(String category_type) {
         this.category_type = category_type;
-        this.tasks = tasks;
     }
 
     public String getCategory_type() {
@@ -37,9 +36,6 @@ public class Category {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 
     @Override
     public String toString() {

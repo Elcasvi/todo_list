@@ -1,10 +1,8 @@
 package com.virtualtek.todo_list_backend.model.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -13,71 +11,58 @@ import java.util.List;
 //public class User implements UserDetails {
 public class User{
     @Id
-    @Column(name = "id")
+    @Column(name = "id",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
-    private String pasword;
+    private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
-
+    @OneToMany
+    //@JoinColumn(name="users")
+    List<Task> tasks=new ArrayList<>();
     public User()
     {
 
     }
-
-    public User(String name, String email, String pasword, List<Task> tasks) {
-        this.name = name;
-        this.email = email;
-        this.pasword = pasword;
-        this.tasks = tasks;
-    }
-
     public Long getId() {
         return id;
     }
-
-    public String getName() {
-        return name;
+    public void setId(Long id)
+    {
+        this.id=id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username){
+        this.username = username;
     }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPasword(String pasword) {
-        this.pasword = pasword;
+    public String getUsername()
+    {
+        return username;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getPassword()
+    {
+        return password;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+
+
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name=" + name +
-                ", email=" + email +
-                ", pasword=" + pasword +
-                ", tasks=" + tasks +
+                ", username=" + username +
+                ", password=" + password +
                 '}';
     }
+
 
     /*
     Spring security
