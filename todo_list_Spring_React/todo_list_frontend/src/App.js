@@ -1,60 +1,16 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import {BrowserRouter as Router,Routes,Route}from "react-router-dom"
 import './App.css';
-
+import Dashboard from './Dashboard';
+import Homepage from './Homepage';
 function App() {
-  const [user,setUser]=useState(
-    {
-      username:"dev",
-      password:"Theshad0999"
-    }
-  )
-  var change=false;
-
-  useEffect(()=>
-  {
-    getUser()
-  },[])
-
-/*
-    useEffect(()=>{
-      axios.post("http://localhost:8080/api/login",user)
-      .then((response)=>
-      {
-        console.log("Todo bien!!!!!!!!")
-        console.log(response.data)
-      })
-      .catch((error)=>
-      {
-        console.log("Error!!!!!!!!!!!!!!!")
-        console.log(error.response.status);
-      })
-  })
-*/
-
   
-  const getUser=async()=>
-  {
-    const myUser=await axios.post("http://localhost:8080/api/login",user)
-    .then((response)=>
-    {
-      console.log("Todo bien!!!!!!!!")
-      console.log(response.data)
-    })
-    .catch((error)=>
-    {
-      console.log("Error!!!!!!!!!!!!!!!")
-      console.log(error.response.status);
-    })
-    
-  }
-
-
   return (
-    <div>
-      <p>Hello World!!!</p>
-      
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/" element={<Homepage/>}/>
+      </Routes>
+    </Router>
   );
 }
 
