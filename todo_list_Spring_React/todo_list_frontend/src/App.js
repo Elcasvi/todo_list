@@ -1,14 +1,23 @@
 import {BrowserRouter as Router,Routes,Route}from "react-router-dom"
 import './App.css';
-import Dashboard from './Dashboard';
-import Homepage from './Homepage';
+import Homepage from './pages/Homepage'
+import Dashboard from "./pages/Dashboard";
+import Login from './users/Login'
+import PrivateRoute from "./PrivateRoute";
 function App() {
   
   return (
     <Router>
       <Routes>
-        <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/" element={<Homepage/>}/>
+        <Route path="/login" element={<Login/>}/>
+
+        <Route path="/dashboard" element={
+          <PrivateRoute>
+            <Dashboard/>
+          </PrivateRoute>
+        }/>
+        
       </Routes>
     </Router>
   );

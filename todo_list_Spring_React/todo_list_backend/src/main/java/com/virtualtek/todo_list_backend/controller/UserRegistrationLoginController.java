@@ -26,7 +26,6 @@ public class UserRegistrationLoginController {
     {
         String username=userLogin.getUsername();
         String password=userLogin.getPassword();
-        System.out.println("/////////");
         return userRepository.findByUsernameAndPassword(username,password).orElseThrow(()->new UserNotFoundException());
     }
 }
