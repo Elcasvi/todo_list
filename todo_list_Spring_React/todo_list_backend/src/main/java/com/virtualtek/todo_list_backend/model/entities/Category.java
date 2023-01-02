@@ -41,7 +41,6 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "category_type='" + category_type + '\'' +
-                ", tasks=" + tasks +
                 '}';
     }
 }
