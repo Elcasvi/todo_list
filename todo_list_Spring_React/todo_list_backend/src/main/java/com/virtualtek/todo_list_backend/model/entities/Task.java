@@ -8,8 +8,9 @@ import java.time.LocalDate;
 @Table(name = "tasks")
 public class Task {
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id",unique=true, nullable = false)
     private Long id;
 
     @Column(name="title")
@@ -34,7 +35,12 @@ public class Task {
     {
 
     }
-
+    public Task(String title, String description, LocalDate date)
+    {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+    }
     public Task(String title, String description, LocalDate date, User user_id, Category categories_category_type) {
         this.title = title;
         this.description = description;

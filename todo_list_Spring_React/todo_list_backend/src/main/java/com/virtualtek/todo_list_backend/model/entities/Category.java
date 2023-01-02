@@ -13,9 +13,6 @@ public class Category {
     @Column(name="category_type")
     private String category_type;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Task> tasks=new ArrayList<>();
-
     public Category()
     {
     }
@@ -31,11 +28,6 @@ public class Category {
     public void setCategory_type(String category_type) {
         this.category_type = category_type;
     }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
 
     @Override
     public String toString() {

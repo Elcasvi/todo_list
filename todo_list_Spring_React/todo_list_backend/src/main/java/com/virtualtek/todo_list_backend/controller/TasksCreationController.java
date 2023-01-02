@@ -4,7 +4,10 @@ import com.virtualtek.todo_list_backend.model.entities.Category;
 import com.virtualtek.todo_list_backend.model.entities.Task;
 import com.virtualtek.todo_list_backend.model.entities.User;
 import com.virtualtek.todo_list_backend.model.repositories.Task_repository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -16,11 +19,9 @@ public class TasksCreationController {
     }
 
     @PostMapping("api/newTask")
-    Task newTask(@RequestBody Task newTask,@RequestBody User user,@RequestBody Category category)
+    Task newTask(@RequestBody Task newTask)
     {
-        newTask.setUser_id(user);
-        newTask.setCategories_category_type(category);
+        System.out.println(newTask.toString());
         return task_repository.save(newTask);
-
     }
 }

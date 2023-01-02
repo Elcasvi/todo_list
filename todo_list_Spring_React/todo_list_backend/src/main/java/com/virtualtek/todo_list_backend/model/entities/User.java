@@ -19,9 +19,6 @@ public class User{
 
     @Column(name = "password")
     private String password;
-
-    @OneToMany
-    List<Task> tasks=new ArrayList<>();
     public User()
     {
 

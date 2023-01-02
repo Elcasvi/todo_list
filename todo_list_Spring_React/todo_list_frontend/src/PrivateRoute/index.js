@@ -11,9 +11,5 @@ export default function PrivateRoute({children}) {
     }
     
   );
-  console.log("Dentro de private route")
-  console.log(user.id)
-  console.log(user.username)
-  console.log(user.password)
   return (user.id?children:<Navigate to="/login"/>)
 }
