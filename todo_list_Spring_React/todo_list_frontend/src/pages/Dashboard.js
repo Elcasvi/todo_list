@@ -16,6 +16,8 @@ export default function Dashboard() {
     }
   );
 
+  const[errorMessage,setErrorMessage]=useState("")
+
   const[category,setCategory]=useState(
     {
       category_type:"General"
@@ -42,8 +44,20 @@ export default function Dashboard() {
     console.log(task.categories_category_type)
 
     const tarea=await axios.post("http://localhost:8080/api/newTask",task)
-    console.log("res:");
-    console.log(tarea.data);
+    .then((response)=>
+    {
+      console.log("Todo bien!!!!!!!")
+      console.log(response.data.id)
+      setErrorMessage("")
+      window.location.href=`/dashboard/${response.data.id}`
+    })
+    .catch((error)=>
+    {
+      console.log("Error!!!!!!!!!!!!!!!")
+      console.log(error.response.status);
+      setErrorMessage(error.response.status)
+      alert(error.response.status)
+    });
   }
 
   return (
