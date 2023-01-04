@@ -27,4 +27,10 @@ public class UserController {
     {
         return userService.userLogin(userLogin);
     }
+
+    @PostMapping("api/delete")
+    String delete(@RequestBody User user)
+    {
+        return userService.deleteUser(user);
+    }
 }

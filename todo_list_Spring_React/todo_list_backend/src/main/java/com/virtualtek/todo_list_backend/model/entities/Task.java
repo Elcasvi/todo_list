@@ -25,11 +25,11 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="users")
-    private User user_id;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="categories")
-    private Category categories_category_type;
+    private Category category;
 
     public Task()
     {
@@ -41,12 +41,12 @@ public class Task {
         this.description = description;
         this.date = date;
     }
-    public Task(String title, String description, LocalDate date, User user_id, Category categories_category_type) {
+    public Task(String title, String description, LocalDate date, User user, Category category) {
         this.title = title;
         this.description = description;
         this.date = date;
-        this.user_id = user_id;
-        this.categories_category_type = categories_category_type;
+        this.user = user;
+        this.category = category;
     }
 
     public Long getId() {
@@ -77,20 +77,20 @@ public class Task {
         this.date = date;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Category getCategories_category_type() {
-        return this.categories_category_type;
+    public Category getCategory() {
+        return this.category;
     }
 
-    public void setCategories_category_type(Category categories_category_type) {
-        this.categories_category_type = categories_category_type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -100,8 +100,8 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
-                ", user_id=" + user_id +
-                ", Categories_category_type=" + categories_category_type +
+                ", user=" + user +
+                ", Categories_category_type=" + category +
                 '}';
     }
 }

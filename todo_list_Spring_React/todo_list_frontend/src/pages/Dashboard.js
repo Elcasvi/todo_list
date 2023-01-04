@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { useLocalState } from '../util/useLocalStorage';
-import createTask from '../util/createTask';
 
 export default function Dashboard() {
 
@@ -23,6 +22,31 @@ export default function Dashboard() {
       category_type:"General"
     }
   );
+
+useEffect(()=>
+    {
+      getAllTasksByUser();
+    },[])
+
+    const getAllTasksByUser=async()=>
+    {
+      await axios.post(`http://localhost:8080/api/getAllTasksByUser`,user)
+      .then((response)=>
+    {
+      console.log("Todo bien!!!!!!!")
+      console.log(response.data)
+      setErrorMessage("")
+    })
+    .catch((error)=>
+    {
+      console.log("Error!!!!!!!!!!!!!!!")
+      console.log(error.response.status);
+      setErrorMessage(error.response.status)
+      alert(error.response.status)
+    });
+    }
+
+
   
   const[task,setTask]=useState(
     {
@@ -59,6 +83,9 @@ export default function Dashboard() {
       alert(error.response.status)
     });
   }
+
+   
+
 
   return (
     <div>

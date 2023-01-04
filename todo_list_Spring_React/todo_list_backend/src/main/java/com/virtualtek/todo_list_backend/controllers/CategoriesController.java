@@ -20,4 +20,10 @@ public class CategoriesController {
     {
         return categoryService.newCategory(category);
     }
+
+    @PostMapping("api/deleteCategory")
+    public String deleteCategory(@RequestBody Category category)
+    {
+        return categoryService.deleteCategory(category);
+    }
 }

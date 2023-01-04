@@ -23,4 +23,17 @@ public class UserService {
         String password=user.getPassword();
         return userRepository.findByUsernameAndPassword(username,password).orElseThrow(()->new UserNotFoundException());
     }
+
+    public String deleteUser(User user)
+    {
+        if(userRepository.existsById(user.getId()))
+        {
+            userRepository.deleteById(user.getId());
+            return "The user has benn deleted succesfully";
+        }
+        else
+        {
+            throw new UserNotFoundException();
+        }
+    }
 }
