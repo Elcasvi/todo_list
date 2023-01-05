@@ -1,5 +1,6 @@
 package com.virtualtek.todo_list_backend.services;
 
+import com.virtualtek.todo_list_backend.exceptions.TaskNotFoundException;
 import com.virtualtek.todo_list_backend.model.entities.Task;
 import com.virtualtek.todo_list_backend.model.entities.User;
 import com.virtualtek.todo_list_backend.model.repositories.Task_repository;
@@ -21,7 +22,8 @@ public class TaskService {
     }
     public Task updateTask(Task task)
     {
-        return task;
+        return task_repository.save(task);
+
     }
 
     public List<Task> getAllTasksByUser(User user)
@@ -29,9 +31,9 @@ public class TaskService {
         return task_repository.findAllByUser(user);
     }
 
-    public Optional<Task> getTaskById(Long id)
+    public Task getTaskById(Long id)
     {
-        return task_repository.findById(id);
+        return task_repository.findById(id).orElseThrow(()->new TaskNotFoundException());
     }
 
 }

@@ -18,10 +18,10 @@ public class CategoryService {
 
     public String deleteCategory(Category category)
     {
-        if(category_repository.existsById(category.getCategory_type()))
+        if(category_repository.existsById(category.getCategory()))
         {
-            String categoryName=category.getCategory_type();
-            category_repository.deleteById(category.getCategory_type());
+            String categoryName=category.getCategory();
+            category_repository.deleteById(category.getCategory());
             return "The category "+categoryName+" has been deleted successfully";
         }
         else

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -37,11 +36,9 @@ public class TasksController {
     {
         return taskService.getAllTasksByUser(user);
     }
-    @GetMapping("/api/getTaskById")
-    public Optional<Task> getTaskById(@RequestBody Task task)
+    @GetMapping("/api/getTaskById/{id}")
+    public Task getTaskById(@PathVariable Long id)
     {
-        return taskService.getTaskById(task.getId());
+        return taskService.getTaskById(id);
     }
-
-
 }

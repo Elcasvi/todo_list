@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from './users/Login'
 import PrivateRoute from "./PrivateRoute";
 import Register from "./users/Register";
+import EditTask from "./pages/EditTask";
 function App() {
   
   return (
@@ -19,7 +20,14 @@ function App() {
             <Dashboard/>
           </PrivateRoute>
         }/>
-        
+
+        <Route path="task/:id"element={
+          <PrivateRoute>
+            <EditTask/>
+          </PrivateRoute>
+        }/>
+
+
       </Routes>
     </Router>
   );
