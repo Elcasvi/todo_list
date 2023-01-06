@@ -1,8 +1,8 @@
 package com.virtualtek.todo_list_backend.services;
 
 import com.virtualtek.todo_list_backend.exceptions.TaskNotFoundException;
+import com.virtualtek.todo_list_backend.model.entities.Category;
 import com.virtualtek.todo_list_backend.model.entities.Task;
-import com.virtualtek.todo_list_backend.model.entities.User;
 import com.virtualtek.todo_list_backend.model.repositories.Task_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,9 @@ public class TaskService {
 
     }
 
-    public List<Task> getAllTasksByUser(User user)
+    public List<Task> getAllTasksByCategory(Category category)
     {
-        return task_repository.findAllByUser(user);
+        return task_repository.findAllByCategory(category);
     }
 
     public Task getTaskById(Long id)

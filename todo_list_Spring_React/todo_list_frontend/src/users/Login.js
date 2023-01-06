@@ -34,7 +34,7 @@ export default function Login() {
       console.log(response.data.id)
       setErrorMessage("")
       setUser(response.data)
-      window.location.href="/dashboard"
+      window.location.href=`/dashboard/General`
     })
     .catch((error)=>
     {
@@ -58,7 +58,7 @@ export default function Login() {
             <input type="password" name="password" value={password} onChange={(event)=>onInputChange(event)}></input>
         </div>
         <div>
-          <button type='submit' onClick={(event)=>sendLoginRequest(event)} to="/dashboard">Login</button>
+          <button type='submit' onClick={(event)=>sendLoginRequest(event)}>Login</button>
         </div>
         <div>
           <h1>Status</h1>

@@ -10,7 +10,5 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface Task_repository extends JpaRepository<Task,Long> {
-   List<Task>findAllByUser(User user);
    List<Task>findAllByCategory(Category category);
-   List<Task>findAllByUserAndCategory(User user,Category category);
 }

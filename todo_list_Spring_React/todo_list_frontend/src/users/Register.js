@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
 import { useEffect, useState } from 'react';
 export default function Register() {
+  const[saveUserVar,setSaveUserVar]=useState(false);
+
     const [user,setUser]=useState(
     {
       username:"",
@@ -11,7 +13,15 @@ export default function Register() {
   );
   
   const{username,password}=user    
-  const[errorMessage,setErrorMessage]=useState("")
+  const[errorMessage,setErrorMessage]=useState(null)
+
+   useEffect(()=>{
+     console.log("dentro del useEffect");
+    if(saveUserVar==true)
+    {
+      createNewCategory()
+    }
+  },[saveUserVar]);
 
   const onInputChange=(event)=>
   {
@@ -21,10 +31,10 @@ export default function Register() {
   const sendLoginRequest=()=>
   {
     console.log("I am sending a request to regist");
-    getUser()
+    saveUser()
   }
   
-  const getUser=()=>
+  const saveUser=()=>
   {
     axios.post("http://localhost:8080/api/register",user)
     .then((response)=>
@@ -33,7 +43,8 @@ export default function Register() {
       console.log(response.data)
       setErrorMessage("")
       setUser(response.data)
-      window.location.href="/dashboard"
+      setSaveUserVar(true)
+      window.location.href="/dashboard/General"
     })
     .catch((error)=>
     {
@@ -44,6 +55,40 @@ export default function Register() {
     });
   }
 
+
+  const createNewCategory=async()=>
+  {
+    const category=
+    {
+      category:"General",
+      user:user
+    }
+    console.log("Dentro de createNewCategory:")
+    await axios.post("http://localhost:8080/api/newCategory",category)
+    .then((response)=>
+    {
+      console.log("Todo bien!!!!!!!")
+      console.log(response.data)
+      setErrorMessage("")
+      setUser(response.data)
+    })
+    .catch((error)=>
+    {
+      console.log("Error!!!!!!!!!!!!!!!")
+      console.log(error.response.status);
+      setErrorMessage(error.response.status)
+      alert(error.response.status)
+    });
+  }
+  
+  /*
+  if(errorMessage=="")
+  {
+    createNewCategory();
+  }
+*/
+
+  
 
   return (
     <div>

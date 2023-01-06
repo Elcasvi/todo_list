@@ -1,5 +1,6 @@
 package com.virtualtek.todo_list_backend.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,12 +23,8 @@ public class Task {
     @Column(name="date")
     private LocalDate date;
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="users")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name="categories")
     private Category category;
 
@@ -41,11 +38,10 @@ public class Task {
         this.description = description;
         this.date = date;
     }
-    public Task(String title, String description, LocalDate date, User user, Category category) {
+    public Task(String title, String description, LocalDate date, Category category) {
         this.title = title;
         this.description = description;
         this.date = date;
-        this.user = user;
         this.category = category;
     }
 
@@ -77,14 +73,6 @@ public class Task {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Category getCategory() {
         return this.category;
     }
@@ -100,7 +88,6 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
-                ", user=" + user +
                 ", Categories_category_type=" + category +
                 '}';
     }

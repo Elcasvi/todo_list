@@ -3,10 +3,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { useLocalState } from '../util/useLocalStorage';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Dashboard() {
 
+  
+  const{categoryGiven}=useParams()
 
   const [user,setUser]=useLocalState(
     {
@@ -20,7 +22,9 @@ export default function Dashboard() {
 
   const[category,setCategory]=useState(
     {
-      category:"General"
+      id:"1",
+      category_types:"General",
+      user:user
     }
   );
 
@@ -29,7 +33,6 @@ export default function Dashboard() {
       title:"Nueva tarea react",
       description:"Tarea desde react",
       date:"2023-01-01",
-      user:user,
       category:category
     }
   );
@@ -42,7 +45,6 @@ export default function Dashboard() {
       //setTask({...task,user:user,category:category})
       console.log("setTask:")
       console.log(task)
-      console.log(task.user)
       console.log(task.category)
       
       await axios.post("http://localhost:8080/api/newTask",task)
@@ -63,16 +65,16 @@ export default function Dashboard() {
   }
 
 
-
-
   useEffect(()=>
     {
-      getAllTasksByUser();
+      console.log("categoryGiven:");
+      console.log(categoryGiven);
+      getAllTasksByCategory();
     },[])
 
-    const getAllTasksByUser=async()=>
+    const getAllTasksByCategory=async()=>
     {
-      await axios.post(`http://localhost:8080/api/getAllTasksByUser`,user)
+      await axios.post(`http://localhost:8080/api/getAllTasksByCategory`,category)
       .then((response)=>
     {
       console.log("Todo bien!!!!!!!")
@@ -91,6 +93,11 @@ export default function Dashboard() {
 
   return (
     <div>
+      <h1>
+        categoryGiven:{categoryGiven}
+      </h1>
+
+
       <button onClick={()=>createAssignment()}>Submit new assignment</button>
       {
           litsOfTasks.map((task)=>(

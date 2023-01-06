@@ -2,7 +2,6 @@ package com.virtualtek.todo_list_backend.controllers;
 
 import com.virtualtek.todo_list_backend.model.entities.Category;
 import com.virtualtek.todo_list_backend.model.entities.Task;
-import com.virtualtek.todo_list_backend.model.entities.User;
 import com.virtualtek.todo_list_backend.services.TaskService;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +30,10 @@ public class TasksController {
         return taskService.updateTask(task);
     }
 
-    @PostMapping("/api/getAllTasksByUser")
-    public List<Task> getAllTasksByUser(@RequestBody User user)
+    @PostMapping("/api/getAllTasksByCategory")
+    public List<Task> getAllTasksByCategory(@RequestBody Category category)
     {
-        return taskService.getAllTasksByUser(user);
+        return taskService.getAllTasksByCategory(category);
     }
     @GetMapping("/api/getTaskById/{id}")
     public Task getTaskById(@PathVariable Long id)
