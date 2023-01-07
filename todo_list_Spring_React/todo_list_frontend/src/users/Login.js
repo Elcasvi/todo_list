@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 export default function Login() {
     const [user,setUser]=useLocalState(
     {
@@ -20,7 +20,6 @@ export default function Login() {
 
   const sendLoginRequest=()=>
   {
-    console.log("I am sending a request to login");
     getUser()
   }
   
@@ -29,16 +28,12 @@ export default function Login() {
     axios.post("http://localhost:8080/api/login",user)
     .then((response)=>
     {
-      console.log("Todo bien!!!!!!!")
-      console.log(response.data)
-      console.log(response.data.id)
       setErrorMessage("")
       setUser(response.data)
       window.location.href=`/dashboard/General`
     })
     .catch((error)=>
     {
-      console.log("Error!!!!!!!!!!!!!!!")
       console.log(error.response.status);
       setErrorMessage(error.response.status)
       alert(error.response.status)

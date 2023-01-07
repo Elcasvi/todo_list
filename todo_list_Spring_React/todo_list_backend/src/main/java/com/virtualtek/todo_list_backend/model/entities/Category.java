@@ -31,6 +31,10 @@ public class Category {
         this.user=user;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -54,6 +58,7 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
+                "id='" + id + '\'' +
                 "category='" + category + '\'' +
                 ", user=" + user +
                 '}';

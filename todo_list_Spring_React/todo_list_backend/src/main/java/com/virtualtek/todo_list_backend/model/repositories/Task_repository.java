@@ -11,4 +11,5 @@ import java.util.Set;
 
 public interface Task_repository extends JpaRepository<Task,Long> {
    List<Task>findAllByCategory(Category category);
+
 }

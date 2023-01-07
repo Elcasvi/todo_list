@@ -66,6 +66,7 @@ export default function EditTask() {
         setErrorMessage("")
         setTask(response.data)
         setCategory(response.data.category)
+        window.location.href=`/dashboard/${category.category}`
       })
       .catch((error)=>
       {

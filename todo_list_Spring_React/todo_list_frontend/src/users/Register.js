@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react';
 export default function Register() {
   const[saveUserVar,setSaveUserVar]=useState(false);
 
-    const [user,setUser]=useState(
+    const [user,setUser]=useLocalState(
     {
+      id:0,
       username:"",
       password:""
     }
@@ -15,8 +16,11 @@ export default function Register() {
   const{username,password}=user    
   const[errorMessage,setErrorMessage]=useState(null)
 
+  useEffect(()=>
+  {
+    setUser({...user,id:0,username:"",password:""})
+  },[])
    useEffect(()=>{
-     console.log("dentro del useEffect");
     if(saveUserVar==true)
     {
       createNewCategory()
@@ -30,7 +34,6 @@ export default function Register() {
 
   const sendLoginRequest=()=>
   {
-    console.log("I am sending a request to regist");
     saveUser()
   }
   
@@ -39,16 +42,14 @@ export default function Register() {
     axios.post("http://localhost:8080/api/register",user)
     .then((response)=>
     {
-      console.log("Todo bien!!!!!!!")
       console.log(response.data)
       setErrorMessage("")
       setUser(response.data)
       setSaveUserVar(true)
-      window.location.href="/dashboard/General"
+      window.location.href="/login"
     })
     .catch((error)=>
     {
-      console.log("Error!!!!!!!!!!!!!!!")
       console.log(error.response.status);
       setErrorMessage(error.response.status)
       alert(error.response.status)
@@ -63,32 +64,21 @@ export default function Register() {
       category:"General",
       user:user
     }
-    console.log("Dentro de createNewCategory:")
+    
     await axios.post("http://localhost:8080/api/newCategory",category)
     .then((response)=>
     {
-      console.log("Todo bien!!!!!!!")
       console.log(response.data)
       setErrorMessage("")
       setUser(response.data)
     })
     .catch((error)=>
     {
-      console.log("Error!!!!!!!!!!!!!!!")
       console.log(error.response.status);
       setErrorMessage(error.response.status)
       alert(error.response.status)
     });
   }
-  
-  /*
-  if(errorMessage=="")
-  {
-    createNewCategory();
-  }
-*/
-
-  
 
   return (
     <div>
