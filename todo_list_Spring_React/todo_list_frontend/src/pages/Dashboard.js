@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 
@@ -28,15 +27,6 @@ export default function Dashboard() {
     }
   );
 
-  const[task,setTask]=useState(
-    {
-      title:"Nueva tarea react",
-      description:"Tarea desde react",
-      date:"2023-01-01",
-      category:null
-    }
-  );
-
 
   const[litsOfTasks,setListOfTasks]=useState([])
 
@@ -53,26 +43,14 @@ export default function Dashboard() {
     }
   },[flag])
 
-  const createAssignment=async()=>
+  const createTask=async()=>
   {
-      console.log("category:")
-      console.log(category)
-      //setTask({...task,category:category})
-      console.log("setTask:")
-      console.log(task)
-      console.log(task.category)
-      
-      await axios.post("http://localhost:8080/api/newTask",task)
-      .then((response)=>
-      {
-        setErrorMessage("")
-        //window.location.href=`/task/${response.data.id}`
-      })
-      .catch((error)=>
-      {
-        setErrorMessage(error.response.status)
-        alert(error.response.status)
-      });
+       window.location.href=`/newTask/${categoryGiven}`
+  }
+
+  const createCategory=async()=>
+  {
+       window.location.href=`/newCategory`
   }
 
 
@@ -95,7 +73,7 @@ export default function Dashboard() {
     const getAllTasksByCategory=async()=>
     {
       await axios.post(`http://localhost:8080/api/getAllTasksByCategory`,category)
-      .then((response)=>
+    .then((response)=>
     {
      console.log(response.data)
       setListOfTasks(response.data)
@@ -114,6 +92,15 @@ export default function Dashboard() {
       <h1>
         categoryGiven:{categoryGiven}
       </h1>
+
+      <div>
+        <button onClick={()=>createTask()}>Create task</button>
+      </div>
+
+      <div>
+        <button onClick={()=>createCategory()}>Create category</button>
+      </div>
+
       {
           litsOfTasks.map((task)=>(
             <div style={{textAlign:'center'}}>

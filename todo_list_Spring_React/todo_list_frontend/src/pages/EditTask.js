@@ -1,11 +1,18 @@
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useLocalState } from '../util/useLocalStorage';
 
 
 export default function EditTask() {
   const{id}=useParams()
-
+   const[user,setUser]=useLocalState(
+    {
+      id:"",
+      username:"",
+      password:""
+    }
+  );
   const[task,setTask]=useState(
     {
       id:0,
@@ -20,7 +27,8 @@ export default function EditTask() {
 
   const[category,setCategory]=useState(
     {
-      category:""
+      category:"",
+      user:user
     }
   )
 
