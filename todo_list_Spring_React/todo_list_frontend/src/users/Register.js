@@ -2,6 +2,9 @@ import React from 'react'
 import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
 import { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import { Button } from 'bootstrap';
+
 export default function Register() {
   const[saveUserVar,setSaveUserVar]=useState(false);
 
@@ -82,22 +85,43 @@ export default function Register() {
 
   return (
     <div>
-        <div>
-            <label htmlFor='username'>Username</label>
-            <input type="text" name="username" value={username} onChange={(event)=>onInputChange(event)}></input>
-        </div>
+      <Container>
+        <div className='bg-secondary'style={{textAlign:'center',padding:"30px"}} >
+          <div>
+            <h1 style={{fontWeight:"bold",paddingBottom:"25px"}}>Todo_list<i class="bi bi-check-all"></i></h1>
+            <h3 style={{fontWeight:"bold"}}>Register<i class="bi bi-check"></i></h3>
+          </div>
+          <Row>
+            <Col>
+          <div>
+              <i class="bi bi-person-fill"></i>
+              <input  class='bg-secondary username'  placeholder='username' type="text" name="username" value={username} onChange={(event)=>onInputChange(event)}></input>
+          </div>
+          </Col>
+          </Row>
+          <br/>
+          <Row>
+            <Col>
+          <div >
+              <i class="bi bi-person-fill-lock"></i>
+              <input class='bg-secondary password' placeholder='password' type="password" name="password" value={password} onChange={(event)=>onInputChange(event)}></input>
+          </div>
+          </Col>
+          </Row>
 
-        <div>
-            <label htmlFor='username'>Password</label>
-            <input type="password" name="password" value={password} onChange={(event)=>onInputChange(event)}></input>
+          <Row>
+            <Col>
+          <div >
+            <button class="bg-info btn btn-default btn-circle btn-xl" type='submit' onClick={(event)=>sendLoginRequest(event)} to="/dashboard" ><i class="bi bi-check-circle"></i></button>
+          </div>
+          </Col>
+          </Row>
+
+          <div>
+            {errorMessage!==""&&<h2>{errorMessage}</h2>}
+          </div>
         </div>
-        <div>
-          <button type='submit' onClick={(event)=>sendLoginRequest(event)} to="/dashboard">Register</button>
-        </div>
-        <div>
-          <h1>Status</h1>
-          {errorMessage!==""&&<h2>{errorMessage}</h2>}
-        </div>
+        </Container>
     </div>
   )
 }

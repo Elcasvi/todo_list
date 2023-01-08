@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
 import { useState } from 'react';
+import { Col, Container, Row ,Button} from 'react-bootstrap';
 export default function Login() {
     const [user,setUser]=useLocalState(
     {
@@ -42,23 +43,48 @@ export default function Login() {
 
 
   return (
-    <div>
-        <div>
-            <label htmlFor='username'>Username</label>
-            <input type="text" name="username" value={username} onChange={(event)=>onInputChange(event)}></input>
-        </div>
+    <div class="dark">
+      <Container>
+        <div className='bg-secondary'style={{textAlign:'center',padding:"30px"}} >
+          <div>
+            <h1 clas="pb-5" style={{fontWeight:"bold"}}>Todo_list<i class="bi bi-check-all"></i></h1>
+            <h3 style={{fontWeight:"bold"}}>Log-in<i class="bi bi-check"></i></h3>
+          </div>
+        <Row>
+          <Col>
+            <div>
+                <i class="bi bi-person-fill"></i>
+                <input class='bg-secondary username'  placeholder='username' type="text" name="username" value={username} onChange={(event)=>onInputChange(event)}></input>
+            </div>
+             </Col>
+        </Row>
 
-        <div>
-            <label htmlFor='username'>Password</label>
-            <input type="password" name="password" value={password} onChange={(event)=>onInputChange(event)}></input>
+        <Row>
+          <Col>
+            <div>
+                <i class="bi bi-person-fill-lock"></i>
+                <input class='bg-secondary password' placeholder='password' type="password" name="password" value={password} onChange={(event)=>onInputChange(event)}></input>
+            </div>
+            </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <div>
+              <button class="bg-info btn btn-default btn-circle btn-xl" type='submit' onClick={(event)=>sendLoginRequest(event)}variant="info" ><i class="bi bi-check-circle"></i></button>
+            </div>
+            </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <div>
+              {errorMessage!==""&&<h2>{errorMessage}</h2>}
+            </div>
+            </Col>
+        </Row>
         </div>
-        <div>
-          <button type='submit' onClick={(event)=>sendLoginRequest(event)}>Login</button>
-        </div>
-        <div>
-          <h1>Status</h1>
-          {errorMessage!==""&&<h2>{errorMessage}</h2>}
-        </div>
+      </Container>
     </div>
   )
 }
