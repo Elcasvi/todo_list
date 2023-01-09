@@ -32,6 +32,7 @@ public class CategoriesController {
     {
         return categoryService.findCategoryByCategoryAndUser(categoryGiven,user);
     }
+
     @PostMapping("api/getAllCategoriesByUser")
         public List<Category>getAllCategoriesByUser(@RequestBody User user)
         {

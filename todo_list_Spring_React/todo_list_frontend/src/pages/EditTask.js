@@ -7,7 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function EditTask() {
   const{id}=useParams()
-  const[categoryName,setCategoryName]=useState("")
+  const[flag,setFlag]=useState(false)
    const[user,setUser]=useLocalState(
     {
       id:"",
@@ -15,27 +15,27 @@ export default function EditTask() {
       password:""
     }
   );
+
+  const[category,setCategory]=useState(
+    {
+      id:0,
+      category:"",
+      user:user
+    }
+  )
+
   const[task,setTask]=useState(
     {
       id:0,
       date:"",
       title:"",
       description:"",
-      category:null
+      category:category
     }
   )
 
   const{title,description}=task
-
-  const[category,setCategory]=useState(
-    {
-      category:"",
-      user:user
-    }
-  )
-
   const[litsOfCategories,setListOfCategories]=useState([])
-  
   const[errorMessage,setErrorMessage]=useState("")
 
   useEffect(()=>
@@ -67,6 +67,8 @@ export default function EditTask() {
         console.log(response.data.id)
         setErrorMessage("")
         setTask(response.data)
+        console.log("response.data.category")
+        console.log(response.data.category)
         setCategory(response.data.category)
       })
       .catch((error)=>
@@ -84,32 +86,36 @@ export default function EditTask() {
 
   const saveTask=async()=>
   {
-    await axios.put(`http://localhost:8080/api/updateTask`,task)
-    .then((response)=>
-      {
-        console.log("Todo bien!!!!!!!")
-        console.log(response.data.id)
-        setErrorMessage("")
-        setTask(response.data)
-        setCategory(response.data.category)
-        window.location.href=`/dashboard/${category.category}`
-      })
-      .catch((error)=>
-      {
-        console.log("Error!!!!!!!!!!!!!!!")
-        console.log(error.response.status);
-        setErrorMessage(error.response.status)
-        alert(error.response.status)
-      });
+    const changedTask={
+      id:task.id,
+      date:task.date,
+      title:task.title,
+      description:task.description,
+      category:category
+    }
+       await axios.put(`http://localhost:8080/api/updateTask`,changedTask)
+      .then((response)=>
+        {
+          setErrorMessage("")
+          window.location.href=`/dashboard/${category.category}`
+        })
+        .catch((error)=>
+        {
+          console.log("Error!!!!!!!!!!!!!!!")
+          console.log(error.response.status);
+          setErrorMessage(error.response.status)
+          alert(error.response.status)
+        });
   }
 
-  const changeCategory=(event)=>
+  const changeCategory=(event,categoryId,categoryName)=>
   {
-    console.log(event.target.name)
-    console.log(event.target.innerText)
-    console.log(category)
-    console.log(category)
+    console.log(categoryId)
+    console.log(categoryName)
+    setCategory({...category,id:categoryId,category:categoryName,user:user})
+    setFlag(true)
   }
+
   const exit=()=>
   {
      window.location.href=`/dashboard/${category.category}`
@@ -124,13 +130,13 @@ export default function EditTask() {
             <h1  style={{fontWeight:"bold"}}>{category.category}</h1>
             <Dropdown >
               <Dropdown.Toggle className='text-light' variant="info" id="dropdown-basic">
-               Add category
+               Change category
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
                  {
                 litsOfCategories.map((categor)=>(
-                    <Dropdown.Item name="changeCategoryTo" onClick={(event)=>changeCategory(event)}>{categor.category}</Dropdown.Item>
+                    <Dropdown.Item  onClick={(event)=>changeCategory(event,categor.id,categor.category)}>{categor.category}</Dropdown.Item>
                 ))
               }           
               </Dropdown.Menu>

@@ -16,6 +16,8 @@ import java.util.Set;
 public class TaskService {
     @Autowired
     private Task_repository task_repository;
+    @Autowired
+    private CategoryService categoryService;
 
     public Task newTask(Task newTask)
     {

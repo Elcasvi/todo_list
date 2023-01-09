@@ -19,6 +19,17 @@ public class CategoryService {
     {
         return category_repository.save(category);
     }
+    public Category updateCategory(Category category)
+    {
+        System.out.println("Dentro de updtCategory");
+        System.out.println(category);
+        return category_repository.findById(category.getId()).map(categoryIterator->{
+            categoryIterator.setId(category.getId());
+            categoryIterator.setCategory(category.getCategory());
+            categoryIterator.setUser(category.getUser());
+            return(category_repository.save(categoryIterator));
+        }).orElseThrow(()->new CategoryNotFoundException());
+    }
 
     public String deleteCategory(Category category)
     {
@@ -33,6 +44,7 @@ public class CategoryService {
             throw new CategoryNotFoundException();
         }
     }
+
     public Category findCategoryByCategoryAndUser(String categoryGiven, User user)
     {
         List<Category>listOfAllCategories=category_repository.findAllByUser(user);
@@ -50,4 +62,5 @@ public class CategoryService {
     {
         return category_repository.findAllByUser(user);
     }
+
 }

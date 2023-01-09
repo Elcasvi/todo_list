@@ -27,6 +27,8 @@ public class TasksController {
     @PutMapping("api/updateTask")
     public Task updateTask(@RequestBody Task task)
     {
+        System.out.println("Desde java");
+        System.out.println(task);
         return taskService.updateTask(task);
     }
 

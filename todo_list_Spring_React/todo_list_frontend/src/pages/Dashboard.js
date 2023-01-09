@@ -52,12 +52,6 @@ export default function Dashboard() {
   {
        window.location.href=`/newTask/${categoryGiven}`
   }
-
-  const createCategory=async()=>
-  {
-       window.location.href=`/newCategory`
-  }
-
   const getAllCategories=async()=>
   {
     await axios.post(`http://localhost:8080/api/getAllCategoriesByUser`,user)
