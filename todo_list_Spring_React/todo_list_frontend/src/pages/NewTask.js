@@ -2,7 +2,10 @@ import React from 'react'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
 
 export default function NewTask() {
 
@@ -31,7 +34,7 @@ const[task,setTask]=useState(
     {
       title:"",
       description:"",
-      date:"2023-01-01",
+      date:"",
       category:category
     }
   );
@@ -40,7 +43,7 @@ const[newTask,setNewTask]=useState(
     {
       title:"",
       description:"",
-      date:"2023-01-01",
+      date:"",
       category:category
     }
   );
@@ -95,25 +98,29 @@ const[newTask,setNewTask]=useState(
   }
   return (
     <div>
-      categoryGiven:{categoryGiven}
-      <br/>
-      category id:{category.id}
-      <br/>
-      category:{category.category}
-      <br/>
-      <div>
-            <label htmlFor='username'>Title</label>
-            <input type="text" name="title" value={title} onChange={(event)=>onInputChange(event)}></input>
-        </div>
+      <Container>
+        <div className='bg-secondary rounded-3'>
+          <h1 className="p-3" style={{fontWeight:"bold"}}>{category.category}</h1>
+          <div style={{textAlign:'center',padding:"30px"}}>
+              <div className='d-flex justify-content-center'>
+                  <h1><i class="bi bi-blockquote-right"></i></h1>
+                  <input className='bg-secondary taskTitle' placeholder='Title' type="text" name="title" value={title} onChange={(event)=>onInputChange(event)}></input>
+              </div>
 
-        <div>
-            <label htmlFor='username'>Description</label>
-            <input type="text" name="description" value={description} onChange={(event)=>onInputChange(event)}></input>
+              <div className='d-flex justify-content-center'>
+                  <h1><i class="bi bi-body-text"></i></h1>
+                  <textarea cols="25"className='bg-secondary taskDesc' placeholder='Description' type="text" name="description" value={description} onChange={(event)=>onInputChange(event)}></textarea>
+              </div>
+
+              <div>
+                <button className="bg-info btn btn-default btn-circle btn-xl text-light" type='submit' onClick={(event)=>sendTaskRequest(event)} to="/dashboard"><i className="bi bi-check-circle"></i></button>
+              </div>
+              <div className="d-flex justify-content-start mt-5">
+                <Link className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' to={`/dashboard/${category.category}`} variant="info" ><i className="bi bi-box-arrow-left"></i></Link>
+              </div>
+          </div>
         </div>
-        <div>
-          <button type='submit' onClick={(event)=>sendTaskRequest(event)} to="/dashboard">Register</button>
-        </div>
-        <div></div>
+        </Container>
     </div>
   )
 }

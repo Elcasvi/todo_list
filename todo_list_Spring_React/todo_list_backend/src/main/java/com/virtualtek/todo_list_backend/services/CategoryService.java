@@ -46,4 +46,8 @@ public class CategoryService {
         throw new CategoryNotFoundException();
     }
 
+    public List<Category> getAllCategoriesByUser(User user)
+    {
+        return category_repository.findAllByUser(user);
+    }
 }
