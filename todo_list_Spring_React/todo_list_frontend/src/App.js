@@ -10,43 +10,47 @@ import Register from "./users/Register";
 import EditTask from "./pages/EditTask";
 import NewTask from "./pages/NewTask";
 import NewCategory from "./pages/NewCategory";
+import NavBar from "./navbar/NavBar";
 function App() {
   
   return (
     <Router>
-    <div className='bg-primary text-light pt-5' style={{ height: '100vh' }}>
-      <Routes>
-        <Route path="/" element={<Homepage/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/login" element={<Login/>}/>
-        
+      <div className='bg-primary text-light pt-5' style={{ height: '100vh',width:'100%'}}>
+        <Routes>
+          <Route path="/" element={<Homepage/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/login" element={<Login/>}/>
+          </Routes>
+          
+            <Routes>
+                <Route path="/newCategory"element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <NewCategory/>
+                </PrivateRoute>
+              }/>
 
-          <Route path="/newCategory"element={
-          <PrivateRoute>
-            <NewCategory/>
-          </PrivateRoute>
-        }/>
+              <Route path="/dashboard/:categoryGiven" element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <Dashboard/>
+                </PrivateRoute>
+              }/>
 
-        <Route path="/dashboard/:categoryGiven" element={
-          <PrivateRoute>
-            <Dashboard/>
-          </PrivateRoute>
-        }/>
+              <Route path="/newTask/:categoryGiven"element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <NewTask/>
+                </PrivateRoute>
+              }/>
 
-        <Route path="/newTask/:categoryGiven"element={
-          <PrivateRoute>
-            <NewTask/>
-          </PrivateRoute>
-        }/>
-
-        <Route path="/task/:id"element={
-          <PrivateRoute>
-            <EditTask/>
-          </PrivateRoute>
-        }/>
-
-
-      </Routes>
+              <Route path="/task/:id"element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <EditTask/>
+                </PrivateRoute>
+              }/>
+          </Routes>
       </div>
     </Router>
   );

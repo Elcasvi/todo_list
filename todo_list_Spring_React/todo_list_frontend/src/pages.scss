@@ -11,36 +11,72 @@ $danger: #f44336;
 .username{
     border:0px;
     outline:0;
+    border-color:transparent;
     margin-top:10px;
     margin-bottom:25px;
-    border-color:transparent;
     text-align:center;
-    color:#fff
+    color:$light;
+    font-weight:bold;
 }
 
 .password {
     border: 0px;
     outline: 0;
+    border-color: transparent;
     margin-top: 10px;
     margin-bottom: 25px;
-    border-color: transparent;
     text-align: center;
-    color: #fff
+    color: $light;
+    font-weight:bold;
 }
 
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
+.listofCategoriesBody {
     text-align: center;
+    color:$light;
+}
+.listofCategoriesBodyLetter {
+    color: #fff;
+}
+
+.cardBody
+{
+    color:$light;
+}
+.taskTitle
+{
+    border:0px;
+    outline:0;
+    border-color:transparent;
+    margin-top: 15px;
+    margin-bottom: 35px;
+    text-align:center;
+    color:$light;
+    font-weight:bold;
+}
+.taskDesc
+{
+    border: 0px;
+    outline: 0;
+    border-color: transparent;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: $light;
+    font-weight: bold;
+}
+
+.btn-circle.btn-md {
+    width: 40px;
+    height: 40px;
+    padding: 10px 16px;
+    border-radius: 35px;
     font-size: 12px;
-    line-height: 1.42857;
+    line-height: 1.33;
 }
 
 .btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     padding: 10px 16px;
     border-radius: 35px;
     font-size: 24px;
