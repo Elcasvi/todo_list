@@ -11,6 +11,8 @@ import EditTask from "./pages/EditTask";
 import NewTask from "./pages/NewTask";
 import NewCategory from "./pages/NewCategory";
 import NavBar from "./navbar/NavBar";
+import DeleteCategories from "./pages/DeleteCategories";
+import EditCategory from "./pages/EditCategory";
 function App() {
   
   return (
@@ -34,6 +36,20 @@ function App() {
                 <PrivateRoute>
                   <NavBar/>
                   <Dashboard/>
+                </PrivateRoute>
+              }/>
+
+              <Route path="/category/:id" element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <EditCategory/>
+                </PrivateRoute>
+              }/>
+
+              <Route path="/deleteCategories" element={
+                <PrivateRoute>
+                  <NavBar/>
+                  <DeleteCategories/>
                 </PrivateRoute>
               }/>
 

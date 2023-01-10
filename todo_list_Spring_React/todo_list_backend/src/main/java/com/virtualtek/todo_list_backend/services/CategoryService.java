@@ -2,6 +2,7 @@ package com.virtualtek.todo_list_backend.services;
 
 import com.virtualtek.todo_list_backend.exceptions.CategoryNotFoundException;
 import com.virtualtek.todo_list_backend.model.entities.Category;
+import com.virtualtek.todo_list_backend.model.entities.Task;
 import com.virtualtek.todo_list_backend.model.entities.User;
 import com.virtualtek.todo_list_backend.model.repositories.Category_repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +10,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
     @Autowired
     private Category_repository category_repository;
+    @Autowired
+    private TaskService taskService;
 
     public Category newCategory(Category category)
     {
         return category_repository.save(category);
     }
+
     public Category updateCategory(Category category)
     {
         System.out.println("Dentro de updtCategory");
@@ -31,10 +36,17 @@ public class CategoryService {
         }).orElseThrow(()->new CategoryNotFoundException());
     }
 
+
     public String deleteCategory(Category category)
     {
         if(category_repository.existsById(category.getId()))
         {
+            List<Task>ListOfTasks=taskService.getAllTasksByCategory(category);
+            for(Task task:ListOfTasks)
+            {
+                taskService.deleteTask(task);
+            }
+
             String categoryName=category.getCategory();
             category_repository.deleteById(category.getId());
             return "The category "+categoryName+" has been deleted successfully";
@@ -58,9 +70,15 @@ public class CategoryService {
         throw new CategoryNotFoundException();
     }
 
+    public Category findCategoryByCategoryIdAndUser(Long id,User user)
+    {
+        return category_repository.findCategoryByIdAndUser(id,user);
+    }
     public List<Category> getAllCategoriesByUser(User user)
     {
         return category_repository.findAllByUser(user);
     }
+
+
 
 }

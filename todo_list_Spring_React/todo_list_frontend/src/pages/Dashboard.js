@@ -119,6 +119,7 @@ export default function Dashboard() {
         <div className='mb-3'>
           <Link className="bg-info btn btn-default btn-circle btn-xl text-light"to={`/newTask/${categoryGiven}`}><i class="bi bi-plus-lg"></i></Link>
         </div>
+        
         <Row>
           {
               litsOfTasks.map((task)=>(

@@ -123,7 +123,7 @@ export default function EditTask() {
         {
           console.log(response.data)
           setErrorMessage("")
-          //window.location.href=`/dashboard/${category.category}`
+          window.location.href=`/dashboard/${category.category}`
         })
         .catch((error)=>
         {

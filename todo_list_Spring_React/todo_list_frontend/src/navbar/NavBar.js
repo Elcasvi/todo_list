@@ -15,6 +15,8 @@ export default function NavBar() {
         <Navbar.Collapse className="text-light"id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link className='text-light' href="/newCategory">Create category</Nav.Link>
+            <Nav.Link className='text-light' href="/deleteCategories">Delete category</Nav.Link>
+            <Nav.Link className='text-light' href="/deleteCategories">Edit category</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

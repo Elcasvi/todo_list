@@ -6,6 +6,7 @@ import com.virtualtek.todo_list_backend.services.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -32,11 +33,21 @@ public class CategoriesController {
     {
         return categoryService.findCategoryByCategoryAndUser(categoryGiven,user);
     }
+    @PostMapping("api/findCategoryByCategoryIdAndUser/{id}")
+    public Category findCategoryByCategoryIdAndUser(@RequestBody User user, @PathVariable Long id)
+    {
+        return categoryService.findCategoryByCategoryIdAndUser(id,user);
+    }
 
     @PostMapping("api/getAllCategoriesByUser")
-        public List<Category>getAllCategoriesByUser(@RequestBody User user)
-        {
-            return categoryService.getAllCategoriesByUser(user);
-        }
+    public List<Category>getAllCategoriesByUser(@RequestBody User user)
+    {
+        return categoryService.getAllCategoriesByUser(user);
+    }
 
+    @PutMapping("api/updateCategory")
+    public Category updateCategory(@RequestBody Category category)
+    {
+        return categoryService.updateCategory(category);
+    }
 }
