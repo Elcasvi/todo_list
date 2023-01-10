@@ -96,6 +96,7 @@ export default function Dashboard() {
       
       setErrorMessage(error.response.status)
       alert(error.response.status)
+      //onClick={()=>createTask()}
     });
     }
 
@@ -116,7 +117,7 @@ export default function Dashboard() {
           {categoryGiven}
         </h1>
         <div className='mb-3'>
-          <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>createTask()}><i class="bi bi-plus-lg"></i></button>
+          <Link className="bg-info btn btn-default btn-circle btn-xl text-light"to={`/newTask/${categoryGiven}`}><i class="bi bi-plus-lg"></i></Link>
         </div>
         <Row>
           {

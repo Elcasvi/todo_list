@@ -115,6 +115,7 @@ const[newTask,setNewTask]=useState(
               <div>
                 <button className="bg-info btn btn-default btn-circle btn-xl text-light" type='submit' onClick={(event)=>sendTaskRequest(event)} to="/dashboard"><i className="bi bi-check-circle"></i></button>
               </div>
+              
               <div className="d-flex justify-content-start mt-5">
                 <Link className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' to={`/dashboard/${category.category}`} variant="info" ><i className="bi bi-box-arrow-left"></i></Link>
               </div>

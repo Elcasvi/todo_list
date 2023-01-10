@@ -6,7 +6,7 @@ import com.virtualtek.todo_list_backend.services.TaskService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -41,5 +41,11 @@ public class TasksController {
     public Task getTaskById(@PathVariable Long id)
     {
         return taskService.getTaskById(id);
+    }
+
+    @PostMapping("api/deleteTask")
+    public String deleteTask(@RequestBody Task task)
+    {
+        return taskService.deleteTask(task);
     }
 }

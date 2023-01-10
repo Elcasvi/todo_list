@@ -116,10 +116,22 @@ export default function EditTask() {
     setFlag(true)
   }
 
-  const exit=()=>
+  const deleteTask=async()=>
   {
-     window.location.href=`/dashboard/${category.category}`
-     //<button className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' onClick={()=>exit()}variant="info" ><i className="bi bi-box-arrow-left"></i></button>
+    await axios.post(`http://localhost:8080/api/deleteTask`,task)
+      .then((response)=>
+        {
+          console.log(response.data)
+          setErrorMessage("")
+          //window.location.href=`/dashboard/${category.category}`
+        })
+        .catch((error)=>
+        {
+          console.log("Error!!!!!!!!!!!!!!!")
+          console.log(error.response.status);
+          setErrorMessage(error.response.status)
+          alert(error.response.status)
+        });
   }
 
   return (
@@ -158,9 +170,11 @@ export default function EditTask() {
               <div style={{marginTop:"2em"}}>
                 <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>saveTask()}><i className="bi bi-check-circle"></i></button>
               </div>
-              <div className="d-flex justify-content-start mt-5">
+              <div className="d-flex justify-content-between mt-5">
                 <Link className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' to={`/dashboard/${category.category}`} variant="info" ><i className="bi bi-box-arrow-left"></i></Link>
+                <button className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' onClick={(event)=>deleteTask(event)} variant="info" ><i class="bi bi-trash3"></i></button>
               </div>
+              
             </div>
         </div>
       </Container>

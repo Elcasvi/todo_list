@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React from 'react'
 import { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useLocalState } from '../util/useLocalStorage';
 
 export default function NewCategory() {
@@ -52,13 +54,27 @@ export default function NewCategory() {
 
   return (
     <div>
-      <div>
-        <label htmlFor='title'>Category Name:</label>
-        <input name='categoryName' value={categoryName} type="text" onChange={(event)=>onInputChange(event)}></input>
-      </div>
-      <div>
-        <button onClick={()=>createCategory()}>Accept</button>
-      </div>
+      <Container>
+        <div className='bg-secondary rounded-3'>
+          <h1 className="p-3" style={{fontWeight:"bold"}}>{category.categoryName}</h1>
+          <div style={{textAlign:'center',padding:"30px"}}>
+
+            <div className='d-flex justify-content-center'>
+              <h1><i class="bi bi-blockquote-right"></i></h1>
+              <input className='bg-secondary taskTitle' placeholder='Category' type="text" name="categoryName" value={categoryName} onChange={(event)=>onInputChange(event)}></input>
+            </div>
+
+            <div>
+              <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>createCategory()}><i className="bi bi-check-circle"></i></button>
+            </div>
+
+            <div className="d-flex justify-content-start mt-5">
+                <Link className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' to={`/dashboard/General`} variant="info" ><i className="bi bi-box-arrow-left"></i></Link>
+              </div>
+
+          </div>
+        </div>
+      </Container>
     </div>
   )
 }
