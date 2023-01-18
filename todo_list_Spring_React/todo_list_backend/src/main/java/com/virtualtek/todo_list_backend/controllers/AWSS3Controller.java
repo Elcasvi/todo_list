@@ -1,17 +1,21 @@
 package com.virtualtek.todo_list_backend.controllers;
 
+import com.virtualtek.todo_list_backend.model.vm.Asset;
 import com.virtualtek.todo_list_backend.services.AWSS3Service;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
 @RestController
+@RequestMapping("api/s3/")
 @CrossOrigin("http://localhost:3000")
 public class AWSS3Controller {
     private final AWSS3Service awss3Service;
@@ -21,13 +25,18 @@ public class AWSS3Controller {
         this.awss3Service=awss3Service;
     }
 
-    @PostMapping("api/s3/saveFile")
-    public String saveFile(@RequestParam("file")MultipartFile file)
+    @PostMapping("uploadFile")
+    public Map<String, String> saveFile(@RequestParam MultipartFile file)
     {
-        System.out.println("Dentro de savefile");
-        return awss3Service.saveFile(file);
+        String key=awss3Service.putObject(file);
+
+        Map<String,String> result=new HashMap<>();
+        result.put("key",key);
+        result.put("url",awss3Service.getObjectUrl(key));
+        return result;
     }
-    @GetMapping("api/s3/getFile/{fileName}")
+
+    @GetMapping("downloadFile/{fileName}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("fileName")String fileName)
     {
         HttpHeaders headers=new HttpHeaders();
@@ -36,14 +45,35 @@ public class AWSS3Controller {
         byte[]bytes=awss3Service.downloadFile(fileName);
         return ResponseEntity.status(HTTP_OK).headers(headers).body(bytes);
     }
-    @DeleteMapping("api/s3/deleteFile{fileName}")
-    public String deleteFile(@PathVariable("fileName")String fileName)
+
+    @GetMapping("getFile/{key}")
+    public ResponseEntity<ByteArrayResource> getFile(@PathVariable String key)
     {
-        return awss3Service.deleteFile(fileName);
+        Asset asset=awss3Service.getObject(key);
+        ByteArrayResource resource=new ByteArrayResource(asset.getContent());
+        return  ResponseEntity
+                .ok()
+                .header("Content-Type",asset.getContentType())
+                .contentLength(asset.getContent().length)
+                .body(resource);
     }
-    @GetMapping("api/s3/getAllFiles")
-    public List<String> getAllFiles()
+
+    @DeleteMapping("deleteFile/{key}")
+    public String deleteFile(@PathVariable String key)
     {
-        return awss3Service.listAllFiles();
+        return awss3Service.deleteObject(key);
+    }
+
+    @GetMapping("getAllFiles")
+    public ResponseEntity<ByteArrayResource> getObject(@RequestParam("fileName")String fileName)
+    {
+        Asset asset=awss3Service.getObject(fileName);
+        ByteArrayResource resource=new ByteArrayResource(asset.getContent());
+        return ResponseEntity
+                        .ok()
+                        .header("Content-Type",asset.getContentType())
+                        .contentLength(asset.getContent().length)
+                        .body(resource);
+
     }
 }

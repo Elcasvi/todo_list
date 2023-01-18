@@ -1,23 +1,19 @@
 package com.virtualtek.todo_list_backend.services;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import com.virtualtek.todo_list_backend.aws.AWSS3ServiceInterface;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.virtualtek.todo_list_backend.model.vm.Asset;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +28,19 @@ public class AWSS3Service implements AWSS3ServiceInterface {
     }
 
     @Override
-    public String saveFile(MultipartFile fileName) {
-        String originalFileName= fileName.getOriginalFilename();
+    public String putObject(MultipartFile file) {
+        String extension= StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String key=String.format("%s.%s", UUID.randomUUID(),extension);
+
+        ObjectMetadata objectMetadata=new ObjectMetadata();
+        objectMetadata.setContentType(file.getContentType());
         try
         {
-            File file1=convertMultiPartToFile(fileName);
-            PutObjectResult putObjectResult =s3.putObject(bucketName,originalFileName,file1);
-            return putObjectResult.getContentMd5();
+            PutObjectRequest putObjectRequest =new PutObjectRequest(bucketName,key,file.getInputStream(),objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+
+            s3.putObject(putObjectRequest);
+            return key;
         }
         catch(IOException exception)
         {
@@ -46,6 +48,34 @@ public class AWSS3Service implements AWSS3ServiceInterface {
         }
 
     }
+
+    @Override
+    public Asset getObject(String key) {
+        S3Object s3Object=s3.getObject(bucketName,key);
+        ObjectMetadata metadata=s3Object.getObjectMetadata();
+        try
+        {
+            S3ObjectInputStream inputStream=s3Object.getObjectContent();
+            byte[]bytes=IOUtils.toByteArray(inputStream);
+            return new Asset(bytes,metadata.getContentType());
+        }
+        catch (IOException exception)
+        {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
+    public String deleteObject(String key) {
+        s3.deleteObject(bucketName,key);
+        return "File deleted";
+    }
+    @Override
+    public String getObjectUrl(String key)
+    {
+        return String.format("https://%s.s3.amazonaws.com/%s",bucketName,key);
+    }
+
 
     @Override
     public byte[] downloadFile(String fileName) {
@@ -59,12 +89,6 @@ public class AWSS3Service implements AWSS3ServiceInterface {
         {
             throw new RuntimeException(exception);
         }
-    }
-
-    @Override
-    public String deleteFile(String fileName) {
-        s3.deleteObject(bucketName,fileName);
-        return "File deleted";
     }
 
     @Override

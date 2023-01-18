@@ -2,6 +2,7 @@ package com.virtualtek.todo_list_backend.controllers;
 
 import com.virtualtek.todo_list_backend.model.entities.Category;
 import com.virtualtek.todo_list_backend.model.entities.Task;
+import com.virtualtek.todo_list_backend.services.AWSS3Service;
 import com.virtualtek.todo_list_backend.services.TaskService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class TasksController {
 
     private final TaskService taskService;
+
 
     public TasksController(TaskService taskService) {
         this.taskService = taskService;
@@ -27,8 +29,6 @@ public class TasksController {
     @PutMapping("api/updateTask")
     public Task updateTask(@RequestBody Task task)
     {
-        System.out.println("Desde java");
-        System.out.println(task);
         return taskService.updateTask(task);
     }
 
@@ -48,4 +48,5 @@ public class TasksController {
     {
         return taskService.deleteTask(task);
     }
+
 }

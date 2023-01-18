@@ -23,6 +23,11 @@ public class Task {
     @Column(name="date")
     private LocalDate date;
 
+    @Column(name="filepath")
+    private String filePath;
+    @Transient
+    private String fileUrl;
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name="categories")
@@ -31,6 +36,15 @@ public class Task {
     public Task()
     {
 
+    }
+    public Task(String title, String description, LocalDate date,Category category,String filePath,String fileUrl)
+    {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.category = category;
+        this.filePath=filePath;
+        this.fileUrl=fileUrl;
     }
     public Task(String title, String description, LocalDate date)
     {
@@ -44,7 +58,6 @@ public class Task {
         this.date = date;
         this.category = category;
     }
-
     public Long getId() {
         return id;
     }
@@ -81,6 +94,22 @@ public class Task {
         this.category = category;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -88,7 +117,9 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
-                ", Categories_category_type=" + category +
+                ", filePath='" + filePath + '\'' +
+                ", fileUrl='" + fileUrl + '\'' +
+                ", category=" + category +
                 '}';
     }
 }
