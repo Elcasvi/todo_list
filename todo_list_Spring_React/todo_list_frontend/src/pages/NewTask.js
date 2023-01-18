@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
 
 export default function NewTask() {
 
@@ -30,16 +28,10 @@ export default function NewTask() {
     }
   );
 
-const[task,setTask]=useState(
-    {
-      title:"",
-      description:"",
-      date:"",
-      category:category
-    }
-  );
+const[file,setFile]=useState("")
+const[filePath,setFilePath]=useState(null)
 
-const[newTask,setNewTask]=useState(
+const[task,setTask]=useState(
     {
       title:"",
       description:"",
@@ -68,21 +60,73 @@ const[newTask,setNewTask]=useState(
     setTask({...task,[event.target.name]:event.target.value});
   }
 
+  const onInputFileChange=(event)=>
+  {
+    setFile(event.target.files[0])
+  }
+
+
+
   const sendTaskRequest=async()=>
   {
-    const setingTask=
+    if(file!="")
+    {
+      getFilePath(file)
+    }
+    else
+    {
+      setFilePath("")
+    }
+  }
+
+  const getFilePath=async(filePath)=>
+  {
+    let formData=new FormData()
+    formData.append('file',file)
+    await axios(
+      {
+        url:"http://localhost:8080/api/s3/uploadFile",
+        method:"POST",
+        data:formData
+      }
+    )
+    .then((response)=>
+    {
+      console.log("Dentro de getFilepath")
+      console.log("Response data:")
+      console.log(response.data)
+      setFilePath(response.data.key)
+      setErrorMessage("") 
+    })
+    .catch((error)=>
+    {
+      console.log(error.response.status);
+      setErrorMessage(error.response.status)
+      alert(error.response.status)
+    });
+  }
+
+  useEffect(()=>
+  {
+    if(filePath!=null)
+    {
+      const setingTask=
     {
       title:"",
       description:"",
       date:"",
+      filePath:"",
       category:null
     }
     setingTask.title=task.title
     setingTask.description=task.description
     setingTask.date=task.date
     setingTask.category=category
+    setingTask.filePath=filePath
 
-    await axios.post("http://localhost:8080/api/newTask",setingTask)
+    console.log("setingTask:")
+    console.log(setingTask)
+    axios.post("http://localhost:8080/api/newTask",setingTask)
     .then((response)=>
     {
       console.log(response.data)
@@ -95,7 +139,9 @@ const[newTask,setNewTask]=useState(
       setErrorMessage(error.response.status)
       alert(error.response.status)
     });
-  }
+    }
+  },[filePath])
+
   return (
     <div>
       <Container>
@@ -110,6 +156,10 @@ const[newTask,setNewTask]=useState(
               <div className='d-flex justify-content-center'>
                   <h1><i class="bi bi-body-text"></i></h1>
                   <textarea cols="25"className='bg-secondary taskDesc' placeholder='Description' type="text" name="description" value={description} onChange={(event)=>onInputChange(event)}></textarea>
+              </div>
+
+              <div className='d-flex justify-content-center'>
+                  <input type="file" name="file" onChange={(event)=>onInputFileChange(event)}></input>
               </div>
 
               <div>
