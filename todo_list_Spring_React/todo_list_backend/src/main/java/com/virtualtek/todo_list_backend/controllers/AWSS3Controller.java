@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.ion.SystemSymbols;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,10 +47,20 @@ public class AWSS3Controller {
         return ResponseEntity.status(HTTP_OK).headers(headers).body(bytes);
     }
 
-    @GetMapping("getFile/{key}")
-    public ResponseEntity<ByteArrayResource> getFile(@PathVariable String key)
+    @PostMapping("getFile")
+    public ResponseEntity<ByteArrayResource> getFile(@RequestBody String key)
     {
-        Asset asset=awss3Service.getObject(key);
+        int keyLength=key.length()-1;
+        String newKey="";
+        for(int i=0;i<keyLength;i++)
+        {
+            String character=String.valueOf(key.charAt(i));
+            newKey=newKey+character;
+        }
+        System.out.println("newKey:");
+        System.out.println(newKey);
+
+        Asset asset=awss3Service.getObject(newKey);
         ByteArrayResource resource=new ByteArrayResource(asset.getContent());
         return  ResponseEntity
                 .ok()

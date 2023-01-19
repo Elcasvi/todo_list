@@ -15,7 +15,7 @@ export default function EditTask() {
       password:""
     }
   );
-
+  const [image,setImage]=useState(null)
   const[category,setCategory]=useState(
     {
       id:0,
@@ -30,6 +30,7 @@ export default function EditTask() {
       date:"",
       title:"",
       description:"",
+      filePath:"",
       category:category
     }
   )
@@ -43,6 +44,14 @@ export default function EditTask() {
     getAllCategories()
     getTask()
   },[])
+
+  useEffect(()=>
+  {
+    if(task.filePath!="")
+    {
+      getFile()
+    }
+  },[task.filePath])
 
   const getAllCategories=async()=>
     {
@@ -63,22 +72,41 @@ export default function EditTask() {
     await axios.get(`http://localhost:8080/api/getTaskById/${id}`)
     .then((response)=>
       {
-        console.log("Todo bien!!!!!!!")
-        console.log(response.data.id)
+        
         setErrorMessage("")
         setTask(response.data)
-        console.log("response.data.category")
-        console.log(response.data.category)
+       
         setCategory(response.data.category)
       })
       .catch((error)=>
       {
-        console.log("Error!!!!!!!!!!!!!!!")
+        
         console.log(error.response.status);
         setErrorMessage(error.response.status)
         alert(error.response.status)
       });
   }
+
+  const getFile=async()=>
+  {
+    console.log("task.filePath:")
+    console.log(task.filePath)
+    await axios.post(`http://localhost:8080/api/s3/getFile`,task.filePath)
+    .then((response)=>
+      {
+        console.log(response)
+        setErrorMessage("")
+        setImage(response.data)
+      })
+      .catch((error)=>
+      {
+        
+        console.log(error.response.status);
+        setErrorMessage(error.response.status)
+        alert(error.response.status)
+      });
+  }
+  
   const onInputChange=(event)=>
   {
     setTask({...task,[event.target.name]:event.target.value})
@@ -167,6 +195,15 @@ export default function EditTask() {
                 <h1><i class="bi bi-body-text"></i></h1>
                 <textarea  cols="25" className='bg-secondary taskDesc' name='description' value={description} type="text"onChange={(event)=>onInputChange(event)}></textarea>
               </div>
+              {
+                image?(
+                  <div className='d-flex justify-content-center'>
+                  <img src={"https://app-todo-list-bucket.s3.us-west-1.amazonaws.com/549aaa9b-5b7e-4479-9a8a-23784fb2eac6.jpeg"} class="rounded mx-auto d-block" alt="..."></img>
+                  </div>
+                ):null
+              }
+              
+
               <div style={{marginTop:"2em"}}>
                 <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>saveTask()}><i className="bi bi-check-circle"></i></button>
               </div>

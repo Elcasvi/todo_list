@@ -96,7 +96,7 @@ export default function Dashboard() {
       
       setErrorMessage(error.response.status)
       alert(error.response.status)
-      //onClick={()=>createTask()}
+     
     });
     }
 
@@ -119,10 +119,10 @@ export default function Dashboard() {
         <div className='mb-3'>
           <Link className="bg-info btn btn-default btn-circle btn-xl text-light"to={`/newTask/${categoryGiven}`}><i class="bi bi-plus-lg"></i></Link>
         </div>
-        
         <Row>
           {
               litsOfTasks.map((task)=>(
+                
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <Card className='bg-secondary rounded-3 m-4'style={{ width: '18rem' }}>
                     <Card.Body>

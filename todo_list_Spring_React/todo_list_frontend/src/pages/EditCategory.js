@@ -95,7 +95,7 @@ export default function EditCategory() {
             <div>
               <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>saveCategory()}><i className="bi bi-check-circle"></i></button>
             </div>
-
+            
             <div className="d-flex justify-content-start mt-5">
                 <Link className="bg-danger btn btn-default btn-circle btn-xl text-light" type='submit' to={`/dashboard/General`} variant="info" ><i className="bi bi-box-arrow-left"></i></Link>
               </div>
