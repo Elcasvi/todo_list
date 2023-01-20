@@ -6,6 +6,8 @@ import { Container , Row , Col } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function EditTask() {
+
+  //----------------------Variables----------------------
   const{id}=useParams()
   const[flag,setFlag]=useState(false)
    const[user,setUser]=useLocalState(
@@ -35,19 +37,27 @@ export default function EditTask() {
       category:category
     }
   )
-  const [image,setImage]=useState(null)
+  const[go,setGo]=useState(null)
+  const[image,setImage]=useState(null)
   const[fileKey,setFileKey]=useState(null)
   const[fileUrl,setFileUrl]=useState(null)
-  const[file,setFile]=useState("")
+  const[file,setFile]=useState(null)
+  const[firstFileKey,setFirstFileKey]=useState(null)
+  const[finalFileKey,setFinalFileKey]=useState(null)
   const{title,description}=task
   const[litsOfCategories,setListOfCategories]=useState([])
   const[errorMessage,setErrorMessage]=useState("")
 
+
+  //----------------------useEffect----------------------
   useEffect(()=>
   {
+    console.log("Dentro del primer console")
     getAllCategories()
     getTask()
   },[])
+
+
 
   useEffect(()=>
   {
@@ -60,6 +70,57 @@ export default function EditTask() {
     }
   },[task.fileUrl])
 
+useEffect(()=>
+  {
+    if(go!==null)
+    {
+      const changedTask={
+      id:task.id,
+      date:task.date,
+      title:task.title,
+      description:task.description,
+      fileKey:fileKey,
+      fileUrl:fileUrl,
+      category:category
+      }
+      
+      console.log("changedTask:")
+      console.log(changedTask)
+      axios.put(`http://localhost:8080/api/updateTask`,changedTask)
+      .then((response)=>
+        {
+          setErrorMessage("")
+          window.location.href=`/dashboard/${category.category}`
+        })
+        .catch((error)=>
+        {
+          console.log("Error!!!!!!!!!!!!!!!")
+          console.log(error.response.status);
+          setErrorMessage(error.response.status)
+          alert(error.response.status)
+        });
+    }
+  },[go])
+
+
+
+
+//----------------------onInputChanges----------------------
+const onInputChange=(event)=>
+  {
+    setTask({...task,[event.target.name]:event.target.value})
+  }
+
+  const onInputFileChange=(event)=>
+  {
+    setFile(event.target.files[0])
+  }
+
+
+
+//-------------------------Functions-------------------------
+
+//----------------------Getters----------------------
   const getAllCategories=async()=>
     {
       await axios.post(`http://localhost:8080/api/getAllCategoriesByUser`,user)
@@ -77,6 +138,7 @@ export default function EditTask() {
 
   const getTask=async()=>
   {
+    console.log("Dentro de getTask")
     await axios.get(`http://localhost:8080/api/getTaskById/${id}`)
     .then((response)=>
       {
@@ -84,8 +146,10 @@ export default function EditTask() {
         console.log(response.data)
         setErrorMessage("")
         setTask(response.data)
-       
+        setFileKey(response.data.fileKey)
+        setFileUrl(response.data.fileUrl)
         setCategory(response.data.category)
+        setFirstFileKey(response.data.fileKey)
       })
       .catch((error)=>
       {
@@ -96,31 +160,7 @@ export default function EditTask() {
       });
   }
 
-  
-  const onInputChange=(event)=>
-  {
-    setTask({...task,[event.target.name]:event.target.value})
-  }
-
-  const onInputFileChange=(event)=>
-  {
-    setFile(event.target.files[0])
-  }
-
-  const saveTask=async()=>
-  {
-    if(file!="")
-    {
-      getFileData(file)
-    }
-    else{
-      setFileKey("")
-      setFileUrl("")
-    }
-  }
-
-
-  const getFileData=async(file)=>
+const getFileData=async(file)=>
   {
     let formData=new FormData()
     formData.append('file',file)
@@ -135,6 +175,8 @@ export default function EditTask() {
     {
       setFileKey(response.data.key)
       setFileUrl(response.data.url)
+      setFinalFileKey(response.data.key)
+      setGo(true)
       setErrorMessage("") 
     })
     .catch((error)=>
@@ -144,6 +186,55 @@ export default function EditTask() {
       alert(error.response.status)
     });
   }
+
+
+//----------------------Saves----------------------
+const saveTask=()=>
+{
+  console.log("file:")
+  console.log(file)
+
+  console.log("firstFileKey:")
+  console.log(firstFileKey)
+
+  console.log("image:")
+  console.log(image)
+  if(file===null && firstFileKey==="" && image===null)//Entra sin foto-Sale sin foto
+  {
+    console.log("Dentro de 1")
+    setGo(true)
+  }
+  else if(file!==null && firstFileKey==="" && image===null)//Entra sin foto-Sale con foto
+  { 
+    console.log("Dentro de 2")
+    getFileData(file)
+    
+  }
+  else if(file===null && firstFileKey!==""&& image===null)//Entra con foto-Sale sin foto
+  {
+    console.log("Dentro de 3")
+    setFileKey("")
+    setFileUrl("")
+    
+    deleteFile()
+    setGo(true)
+    
+  }
+  else if(file===null && firstFileKey!=="" && image!==null)//Entra con foto-Sale con la misma foto
+  {
+    console.log("Dentro de 4")
+    setGo(true)
+    
+  }
+  else if(file!==null && firstFileKey!=="" && image===null)////Entra con foto-Sale con otra foto
+  {
+    console.log("Dentro de 5")
+    deleteFile()
+    getFileData(file)    
+  }
+}
+
+
   const changeCategory=(event,categoryId,categoryName)=>
   {
     console.log(categoryId)
@@ -152,9 +243,14 @@ export default function EditTask() {
     setFlag(true)
   }
 
+
+//----------------------Deletes----------------------
   const deleteTask=async()=>
   {
-    deleteFile();
+    if(task.fileKey!=="")
+    {
+      deleteFile(task.file)
+    }
     await axios.post(`http://localhost:8080/api/deleteTask`,task)
       .then((response)=>
         {
@@ -172,14 +268,10 @@ export default function EditTask() {
 
   const deleteFile=async()=>
   {
-    const key=task.fileKey
-    console.log("deletingFileKey:")
-    console.log(key)
-    console.log("Dentro de deleteFile")
-    await axios.delete(`http://localhost:8080/api/s3/deleteFile/${key}`)
+    console.log(firstFileKey)
+    await axios.delete(`http://localhost:8080/api/s3/deleteFile/${firstFileKey}`)
       .then((response)=>
         {
-          setTask({...task,fileKey:"",fileUrl:""})
           console.log("response.data deletefile:")
           console.log(response.data)
           setErrorMessage("")
@@ -195,42 +287,11 @@ export default function EditTask() {
   const deleteImage=()=>
   {
     setImage(null)
-  }
+  } 
 
-useEffect(()=>
-  {
-    if(fileKey!=null)
-    {
-      const changedTask={
-      id:task.id,
-      date:task.date,
-      title:task.title,
-      description:task.description,
-      fileKey:"",
-      fileUrl:"",
-      category:category
-      }
-      changedTask.fileKey=fileKey
-      changedTask.fileUrl=fileUrl
 
-      console.log("changedTask:")
-      console.log(changedTask)
-      axios.put(`http://localhost:8080/api/updateTask`,changedTask)
-      .then((response)=>
-        {
-          setErrorMessage("")
-          window.location.href=`/dashboard/${category.category}`
-        })
-        .catch((error)=>
-        {
-          console.log("Error!!!!!!!!!!!!!!!")
-          console.log(error.response.status);
-          setErrorMessage(error.response.status)
-          alert(error.response.status)
-        });
-    }
-  },[fileKey])
   
+
   return (
     <div>
       <Container>
