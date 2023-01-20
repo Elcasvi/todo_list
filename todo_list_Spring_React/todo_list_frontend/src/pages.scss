@@ -83,5 +83,20 @@ $danger: #f44336;
     line-height: 1.33;
 }
 
+.btn-circle.btn-md {
+    width: 45px;
+    height: 45px;
+    padding: 8px 13px;
+    border-radius: 35px;
+    font-size: 20px;
+    line-height: 1.33;
+}
+
+.taskImage{
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+}
+
 // import bootstrap styles at the bottom!
 @import '~bootstrap/scss/bootstrap.scss';

@@ -23,9 +23,9 @@ public class Task {
     @Column(name="date")
     private LocalDate date;
 
-    @Column(name="filepath")
-    private String filePath;
-    @Transient
+    @Column(name="filekey")
+    private String fileKey;
+    @Column(name="fileurl")
     private String fileUrl;
 
     @ManyToOne(fetch= FetchType.LAZY)
@@ -37,13 +37,13 @@ public class Task {
     {
 
     }
-    public Task(String title, String description, LocalDate date,Category category,String filePath,String fileUrl)
+    public Task(String title, String description, LocalDate date, Category category, String fileKey, String fileUrl)
     {
         this.title = title;
         this.description = description;
         this.date = date;
         this.category = category;
-        this.filePath=filePath;
+        this.fileKey = fileKey;
         this.fileUrl=fileUrl;
     }
     public Task(String title, String description, LocalDate date)
@@ -94,12 +94,12 @@ public class Task {
         this.category = category;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileKey() {
+        return fileKey;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFileKey(String fileKey) {
+        this.fileKey = fileKey;
     }
 
     public String getFileUrl() {
@@ -117,7 +117,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", date=" + date +
-                ", filePath='" + filePath + '\'' +
+                ", filePath='" + fileKey + '\'' +
                 ", fileUrl='" + fileUrl + '\'' +
                 ", category=" + category +
                 '}';

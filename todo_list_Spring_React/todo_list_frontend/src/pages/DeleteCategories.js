@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Card from 'react-bootstrap/Card';
 
 export default function DeleteCategories() {
@@ -71,7 +69,9 @@ export default function DeleteCategories() {
                                         <Card.Title><h3>{category.category}</h3></Card.Title>
                                         <Card.Subtitle className="mb-2"></Card.Subtitle>
                                         <Card.Text>
-                                             <div class="dropdown" variant="danger" >
+                                          {
+                                            category.category!="General"?(
+                                              <div class="dropdown" variant="danger" >
                                                 <button class="btn btn-secondary dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </button>
@@ -80,6 +80,8 @@ export default function DeleteCategories() {
                                                     <li><Link class="dropdown-item text-info fw-bolder"to={`/category/${category.id}`}>Edit</Link></li>
                                                 </ul>
                                             </div>
+                                            ):null
+                                          }
                                         </Card.Text>
                                         </Card.Body>
                                     </Card>

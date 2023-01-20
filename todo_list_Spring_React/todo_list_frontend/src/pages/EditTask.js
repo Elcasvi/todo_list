@@ -15,7 +15,7 @@ export default function EditTask() {
       password:""
     }
   );
-  const [image,setImage]=useState(null)
+  
   const[category,setCategory]=useState(
     {
       id:0,
@@ -30,11 +30,15 @@ export default function EditTask() {
       date:"",
       title:"",
       description:"",
-      filePath:"",
+      fileKey:"",
+      fileUrl:"",
       category:category
     }
   )
-
+  const [image,setImage]=useState(null)
+  const[fileKey,setFileKey]=useState(null)
+  const[fileUrl,setFileUrl]=useState(null)
+  const[file,setFile]=useState("")
   const{title,description}=task
   const[litsOfCategories,setListOfCategories]=useState([])
   const[errorMessage,setErrorMessage]=useState("")
@@ -47,11 +51,14 @@ export default function EditTask() {
 
   useEffect(()=>
   {
-    if(task.filePath!="")
+    if(task.fileUrl!="")
     {
-      getFile()
+      setImage(task.fileUrl)
     }
-  },[task.filePath])
+    else{
+      setImage(null)
+    }
+  },[task.fileUrl])
 
   const getAllCategories=async()=>
     {
@@ -67,12 +74,14 @@ export default function EditTask() {
           alert(error.response.status)
         });
     }
+
   const getTask=async()=>
   {
     await axios.get(`http://localhost:8080/api/getTaskById/${id}`)
     .then((response)=>
       {
-        
+        console.log("response.data get taskY")
+        console.log(response.data)
         setErrorMessage("")
         setTask(response.data)
        
@@ -87,55 +96,54 @@ export default function EditTask() {
       });
   }
 
-  const getFile=async()=>
-  {
-    console.log("task.filePath:")
-    console.log(task.filePath)
-    await axios.post(`http://localhost:8080/api/s3/getFile`,task.filePath)
-    .then((response)=>
-      {
-        console.log(response)
-        setErrorMessage("")
-        setImage(response.data)
-      })
-      .catch((error)=>
-      {
-        
-        console.log(error.response.status);
-        setErrorMessage(error.response.status)
-        alert(error.response.status)
-      });
-  }
   
   const onInputChange=(event)=>
   {
     setTask({...task,[event.target.name]:event.target.value})
   }
 
-  const saveTask=async()=>
+  const onInputFileChange=(event)=>
   {
-    const changedTask={
-      id:task.id,
-      date:task.date,
-      title:task.title,
-      description:task.description,
-      category:category
-    }
-       await axios.put(`http://localhost:8080/api/updateTask`,changedTask)
-      .then((response)=>
-        {
-          setErrorMessage("")
-          window.location.href=`/dashboard/${category.category}`
-        })
-        .catch((error)=>
-        {
-          console.log("Error!!!!!!!!!!!!!!!")
-          console.log(error.response.status);
-          setErrorMessage(error.response.status)
-          alert(error.response.status)
-        });
+    setFile(event.target.files[0])
   }
 
+  const saveTask=async()=>
+  {
+    if(file!="")
+    {
+      getFileData(file)
+    }
+    else{
+      setFileKey("")
+      setFileUrl("")
+    }
+  }
+
+
+  const getFileData=async(file)=>
+  {
+    let formData=new FormData()
+    formData.append('file',file)
+    await axios(
+      {
+        url:"http://localhost:8080/api/s3/uploadFile",
+        method:"POST",
+        data:formData
+      }
+    )
+    .then((response)=>
+    {
+      setFileKey(response.data.key)
+      setFileUrl(response.data.url)
+      setErrorMessage("") 
+    })
+    .catch((error)=>
+    {
+      console.log(error.response.status);
+      setErrorMessage(error.response.status)
+      alert(error.response.status)
+    });
+  }
   const changeCategory=(event,categoryId,categoryName)=>
   {
     console.log(categoryId)
@@ -146,10 +154,70 @@ export default function EditTask() {
 
   const deleteTask=async()=>
   {
+    deleteFile();
     await axios.post(`http://localhost:8080/api/deleteTask`,task)
       .then((response)=>
         {
           console.log(response.data)
+          setErrorMessage("")
+          window.location.href=`/dashboard/${category.category}`
+        })
+        .catch((error)=>
+        {
+          console.log(error.response.status);
+          setErrorMessage(error.response.status)
+          alert(error.response.status)
+        });
+  }
+
+  const deleteFile=async()=>
+  {
+    const key=task.fileKey
+    console.log("deletingFileKey:")
+    console.log(key)
+    console.log("Dentro de deleteFile")
+    await axios.delete(`http://localhost:8080/api/s3/deleteFile/${key}`)
+      .then((response)=>
+        {
+          setTask({...task,fileKey:"",fileUrl:""})
+          console.log("response.data deletefile:")
+          console.log(response.data)
+          setErrorMessage("")
+        })
+        .catch((error)=>
+        {
+          console.log(error.response.status);
+          setErrorMessage(error.response.status)
+          alert(error.response.status)
+        });
+  }
+
+  const deleteImage=()=>
+  {
+    setImage(null)
+  }
+
+useEffect(()=>
+  {
+    if(fileKey!=null)
+    {
+      const changedTask={
+      id:task.id,
+      date:task.date,
+      title:task.title,
+      description:task.description,
+      fileKey:"",
+      fileUrl:"",
+      category:category
+      }
+      changedTask.fileKey=fileKey
+      changedTask.fileUrl=fileUrl
+
+      console.log("changedTask:")
+      console.log(changedTask)
+      axios.put(`http://localhost:8080/api/updateTask`,changedTask)
+      .then((response)=>
+        {
           setErrorMessage("")
           window.location.href=`/dashboard/${category.category}`
         })
@@ -160,8 +228,9 @@ export default function EditTask() {
           setErrorMessage(error.response.status)
           alert(error.response.status)
         });
-  }
-
+    }
+  },[fileKey])
+  
   return (
     <div>
       <Container>
@@ -197,13 +266,16 @@ export default function EditTask() {
               </div>
               {
                 image?(
-                  <div className='d-flex justify-content-center'>
-                  <img src={"https://app-todo-list-bucket.s3.us-west-1.amazonaws.com/549aaa9b-5b7e-4479-9a8a-23784fb2eac6.jpeg"} class="rounded mx-auto d-block" alt="..."></img>
+                  <div>
+                      <img src={image} class="rounded mx-auto d-block taskImage" alt="..."></img>
+                      <button className="bg-danger btn btn-default btn-circle btn-md text-light mt-2" type='submit' onClick={()=>deleteImage()} variant="info" ><i class="bi bi-trash3"></i></button>
                   </div>
-                ):null
+                ):
+                <div className='d-flex justify-content-center'>
+                  <input type="file" name="file" onChange={(event)=>onInputFileChange(event)}></input>
+                  </div>
               }
-              
-
+            
               <div style={{marginTop:"2em"}}>
                 <button className="bg-info btn btn-default btn-circle btn-xl text-light" onClick={()=>saveTask()}><i className="bi bi-check-circle"></i></button>
               </div>

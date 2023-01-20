@@ -47,20 +47,10 @@ public class AWSS3Controller {
         return ResponseEntity.status(HTTP_OK).headers(headers).body(bytes);
     }
 
-    @PostMapping("getFile")
-    public ResponseEntity<ByteArrayResource> getFile(@RequestBody String key)
+    @GetMapping("getFile/{key}")
+    public ResponseEntity<ByteArrayResource> getFile(@PathVariable String key)
     {
-        int keyLength=key.length()-1;
-        String newKey="";
-        for(int i=0;i<keyLength;i++)
-        {
-            String character=String.valueOf(key.charAt(i));
-            newKey=newKey+character;
-        }
-        System.out.println("newKey:");
-        System.out.println(newKey);
-
-        Asset asset=awss3Service.getObject(newKey);
+        Asset asset=awss3Service.getObject(key);
         ByteArrayResource resource=new ByteArrayResource(asset.getContent());
         return  ResponseEntity
                 .ok()
@@ -72,6 +62,8 @@ public class AWSS3Controller {
     @DeleteMapping("deleteFile/{key}")
     public String deleteFile(@PathVariable String key)
     {
+        System.out.println("key:");
+        System.out.println(key);
         return awss3Service.deleteObject(key);
     }
 

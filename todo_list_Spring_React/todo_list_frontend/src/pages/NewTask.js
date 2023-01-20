@@ -29,7 +29,8 @@ export default function NewTask() {
   );
 
 const[file,setFile]=useState("")
-const[filePath,setFilePath]=useState(null)
+const[fileKey,setFileKey]=useState(null)
+const[fileUrl,setFileUrl]=useState(null)
 
 const[task,setTask]=useState(
     {
@@ -71,15 +72,16 @@ const[task,setTask]=useState(
   {
     if(file!="")
     {
-      getFilePath(file)
+      getFileData(file)
     }
     else
     {
-      setFilePath("")
+      setFileKey("")
+      setFileUrl("")
     }
   }
 
-  const getFilePath=async(filePath)=>
+  const getFileData=async(file)=>
   {
     let formData=new FormData()
     formData.append('file',file)
@@ -92,10 +94,9 @@ const[task,setTask]=useState(
     )
     .then((response)=>
     {
-      console.log("Dentro de getFilepath")
-      console.log("Response data:")
       console.log(response.data)
-      setFilePath(response.data.key)
+      setFileKey(response.data.key)
+      setFileUrl(response.data.url)
       setErrorMessage("") 
     })
     .catch((error)=>
@@ -108,39 +109,40 @@ const[task,setTask]=useState(
 
   useEffect(()=>
   {
-    if(filePath!=null)
+    if(fileKey!=null)
     {
-      const setingTask=
-    {
-      title:"",
-      description:"",
-      date:"",
-      filePath:"",
-      category:null
-    }
-    setingTask.title=task.title
-    setingTask.description=task.description
-    setingTask.date=task.date
-    setingTask.category=category
-    setingTask.filePath=filePath
+        const setingTask={
+        title:"",
+        description:"",
+        date:"",
+        fileKey:"",
+        fileUrl:"",
+        category:null
+      }
+      setingTask.title=task.title
+      setingTask.description=task.description
+      setingTask.date=task.date
+      setingTask.category=category
+      setingTask.fileKey=fileKey
+      setingTask.fileUrl=fileUrl
 
-    console.log("setingTask:")
-    console.log(setingTask)
-    axios.post("http://localhost:8080/api/newTask",setingTask)
-    .then((response)=>
-    {
-      console.log(response.data)
-      setErrorMessage("") 
-      window.location.href=`/dashboard/${categoryGiven}`
-    })
-    .catch((error)=>
-    {
-      console.log(error.response.status);
-      setErrorMessage(error.response.status)
-      alert(error.response.status)
-    });
+      console.log("setingTask:")
+      console.log(setingTask)
+      axios.post("http://localhost:8080/api/newTask",setingTask)
+      .then((response)=>
+      {
+        console.log(response.data)
+        setErrorMessage("") 
+        window.location.href=`/dashboard/${categoryGiven}`
+      })
+      .catch((error)=>
+      {
+        console.log(error.response.status);
+        setErrorMessage(error.response.status)
+        alert(error.response.status)
+      });
     }
-  },[filePath])
+  },[fileKey])
 
   return (
     <div>

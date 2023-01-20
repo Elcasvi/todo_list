@@ -38,7 +38,6 @@ public class TaskService {
     }
     public String deleteTask(Task task)
     {
-        System.out.println(task);
         if(task_repository.existsById(task.getId()))
         {
             task_repository.deleteById(task.getId());
