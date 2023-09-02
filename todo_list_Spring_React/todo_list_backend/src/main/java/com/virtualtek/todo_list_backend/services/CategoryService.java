@@ -19,6 +19,9 @@ public class CategoryService {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private AWSS3Service awss3Service;
+
     public Category newCategory(Category category)
     {
         return category_repository.save(category);
@@ -44,9 +47,9 @@ public class CategoryService {
             List<Task>ListOfTasks=taskService.getAllTasksByCategory(category);
             for(Task task:ListOfTasks)
             {
+                awss3Service.deleteObject(task.getFileKey());
                 taskService.deleteTask(task);
             }
-
             String categoryName=category.getCategory();
             category_repository.deleteById(category.getId());
             return "The category "+categoryName+" has been deleted successfully";
