@@ -14,8 +14,13 @@ import java.util.Set;
 
 @Service
 public class TaskService {
-    @Autowired
-    private Task_repository task_repository;
+    //@Autowired
+    private final Task_repository task_repository;
+
+    public TaskService(Task_repository task_repository) {
+        this.task_repository = task_repository;
+    }
+
     public Task newTask(Task newTask)
     {
         LocalDate date = LocalDate.now();

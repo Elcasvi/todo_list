@@ -14,13 +14,21 @@ import java.util.Optional;
 
 @Service
 public class CategoryService {
-    @Autowired
-    private Category_repository category_repository;
-    @Autowired
-    private TaskService taskService;
+    //@Autowired
+    private final Category_repository category_repository;
+    //@Autowired
+    private final TaskService taskService;
 
-    @Autowired
-    private AWSS3Service awss3Service;
+    //@Autowired
+    private final AWSS3Service awss3Service;
+    public CategoryService(Category_repository category_repository, TaskService taskService, AWSS3Service awss3Service) {
+        this.category_repository = category_repository;
+        this.taskService = taskService;
+        this.awss3Service = awss3Service;
+    }
+
+
+
 
     public Category newCategory(Category category)
     {
