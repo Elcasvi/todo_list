@@ -42,7 +42,7 @@ export default function Register() {
   
   const saveUser=()=>
   {
-    axios.post("http://localhost:8080/api/register",user)
+    axios.post("https://appservicetodolistbackend.azurewebsites.net/api/register",user)
     .then((response)=>
     {
       console.log(response.data)
@@ -68,7 +68,7 @@ export default function Register() {
       user:user
     }
     
-    await axios.post("http://localhost:8080/api/newCategory",category)
+    await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/newCategory",category)
     .then((response)=>
     {
       console.log(response.data)

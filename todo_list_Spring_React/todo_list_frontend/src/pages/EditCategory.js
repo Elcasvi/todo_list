@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React from 'react'
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useLocalState } from '../util/useLocalStorage';
@@ -17,7 +17,7 @@ export default function EditCategory() {
     }
   );
 
-  const[categoryName,setCategory]=useState(
+  let [categoryName,setCategory]=useState(
     {
       id:id,
       category:"",
@@ -30,7 +30,7 @@ export default function EditCategory() {
   const getCategory=async()=>
   {
     console.log("Dentro de getcategory")
-     await axios.post(`http://localhost:8080/api/findCategoryByCategoryIdAndUser/${id}`,user)
+     await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/findCategoryByCategoryIdAndUser/${id}`,user)
     .then((response)=>
       {
         setCategory(response.data)
@@ -66,7 +66,7 @@ export default function EditCategory() {
     
     newCategory.category=categoryName.category
     console.log(newCategory)
-    await axios.put(`http://localhost:8080/api/updateCategory`,newCategory)
+    await axios.put(`https://appservicetodolistbackend.azurewebsites.net/api/updateCategory`,newCategory)
     .then((response)=>
       {
         console.log(response.data)

@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
-import { Container , Row , Col } from 'react-bootstrap';
+import { Container  } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function EditTask() {
@@ -61,7 +61,7 @@ export default function EditTask() {
 
   useEffect(()=>
   {
-    if(task.fileUrl!="")
+    if(task.fileUrl!=="")
     {
       setImage(task.fileUrl)
     }
@@ -86,7 +86,7 @@ useEffect(()=>
       
       console.log("changedTask:")
       console.log(changedTask)
-      axios.put(`http://localhost:8080/api/updateTask`,changedTask)
+      axios.put(`https://appservicetodolistbackend.azurewebsites.net/api/updateTask`,changedTask)
       .then((response)=>
         {
           setErrorMessage("")
@@ -123,7 +123,7 @@ const onInputChange=(event)=>
 //----------------------Getters----------------------
   const getAllCategories=async()=>
     {
-      await axios.post(`http://localhost:8080/api/getAllCategoriesByUser`,user)
+      await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/getAllCategoriesByUser`,user)
       .then((response)=>
         {
           setErrorMessage("")
@@ -139,7 +139,7 @@ const onInputChange=(event)=>
   const getTask=async()=>
   {
     console.log("Dentro de getTask")
-    await axios.get(`http://localhost:8080/api/getTaskById/${id}`)
+    await axios.get(`https://appservicetodolistbackend.azurewebsites.net/api/getTaskById/${id}`)
     .then((response)=>
       {
         console.log("response.data get taskY")
@@ -166,7 +166,7 @@ const getFileData=async(file)=>
     formData.append('file',file)
     await axios(
       {
-        url:"http://localhost:8080/api/s3/uploadFile",
+        url:"https://appservicetodolistbackend.azurewebsites.net/api/s3/uploadFile",
         method:"POST",
         data:formData
       }
@@ -251,7 +251,7 @@ const saveTask=()=>
     {
       deleteFile(task.file)
     }
-    await axios.post(`http://localhost:8080/api/deleteTask`,task)
+    await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/deleteTask`,task)
       .then((response)=>
         {
           console.log(response.data)
@@ -269,7 +269,7 @@ const saveTask=()=>
   const deleteFile=async()=>
   {
     console.log(firstFileKey)
-    await axios.delete(`http://localhost:8080/api/s3/deleteFile/${firstFileKey}`)
+    await axios.delete(`https://appservicetodolistbackend.azurewebsites.net/api/s3/deleteFile/${firstFileKey}`)
       .then((response)=>
         {
           console.log("response.data deletefile:")

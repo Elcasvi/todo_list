@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 
@@ -25,7 +25,7 @@ export default function DeleteCategories() {
     
     const getCategories=async()=>
     {
-        await axios.post("http://localhost:8080/api/getAllCategoriesByUser",user)
+        await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/getAllCategoriesByUser",user)
          .then((response)=>
         {
           setErrorMessage("")
@@ -41,8 +41,7 @@ export default function DeleteCategories() {
 
     const deleteCategory=async(selectedCategory)=>
     {
-
-        await axios.post("http://localhost:8080/api/deleteCategory",selectedCategory)
+        await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/deleteCategory",selectedCategory)
          .then((response)=>
         {
           setErrorMessage("")
@@ -70,7 +69,7 @@ export default function DeleteCategories() {
                                         <Card.Subtitle className="mb-2"></Card.Subtitle>
                                         <Card.Text>
                                           {
-                                            category.category!="General"?(
+                                            category.category!=="General"?(
                                               <div class="dropdown" variant="danger" >
                                                 <button class="btn btn-secondary dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>

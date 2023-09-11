@@ -1,7 +1,5 @@
 import {BrowserRouter as Router,Routes,Route}from "react-router-dom"
-import 'bootstrap/dist/css/bootstrap.min.css';
 import "./pages.scss"
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import Homepage from './pages/Homepage'
 import Dashboard from "./pages/Dashboard";
 import Login from './users/Login'

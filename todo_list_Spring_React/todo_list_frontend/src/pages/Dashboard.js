@@ -42,16 +42,13 @@ export default function Dashboard() {
 
   useEffect(()=>
   {
-    if(flag==true)
+    if(flag===true)
     {
       getAllTasksByCategory();
     }
   },[flag])
 
-  const createTask=async()=>
-  {
-       window.location.href=`/newTask/${categoryGiven}`
-  }
+
   const getAllCategories=async()=>
   {
     await axios.post(`http://localhost:8080/api/getAllCategoriesByUser`,user)
@@ -68,7 +65,7 @@ export default function Dashboard() {
   }
   const getCategory=async()=>
   {
-    await axios.post(`http://localhost:8080/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
+    await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
     .then((response)=>
       {
         setErrorMessage("")
@@ -84,7 +81,7 @@ export default function Dashboard() {
 
     const getAllTasksByCategory=async()=>
     {
-      await axios.post(`http://localhost:8080/api/getAllTasksByCategory`,category)
+      await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/getAllTasksByCategory`,category)
     .then((response)=>
     {
      console.log(response.data)

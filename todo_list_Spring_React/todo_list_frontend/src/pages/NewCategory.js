@@ -38,7 +38,7 @@ export default function NewCategory() {
     newCategory.category=category.categoryName
     newCategory.user=category.user
 
-    await axios.post(`http://localhost:8080/api/newCategory`,newCategory)
+    await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/newCategory`,newCategory)
     .then((response)=>
       {
         setErrorMessage("")

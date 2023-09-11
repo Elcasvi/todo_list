@@ -51,7 +51,7 @@ const[task,setTask]=useState(
 
   const getCategory=async()=>
   {
-    const res=await axios.post(`http://localhost:8080/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
+    const res=await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
     setCategory(res.data)
   }
 
@@ -87,7 +87,7 @@ const[task,setTask]=useState(
     formData.append('file',file)
     await axios(
       {
-        url:"http://localhost:8080/api/s3/uploadFile",
+        url:"https://appservicetodolistbackend.azurewebsites.net/api/s3/uploadFile",
         method:"POST",
         data:formData
       }
@@ -128,7 +128,7 @@ const[task,setTask]=useState(
 
       console.log("setingTask:")
       console.log(setingTask)
-      axios.post("http://localhost:8080/api/newTask",setingTask)
+      axios.post("https://appservicetodolistbackend.azurewebsites.net/api/newTask",setingTask)
       .then((response)=>
       {
         console.log(response.data)
