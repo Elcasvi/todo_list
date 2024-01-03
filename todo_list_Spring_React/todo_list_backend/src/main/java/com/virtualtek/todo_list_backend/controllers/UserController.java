@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://virtualtek-todolist.azurewebsites.net/")
 public class UserController {
 
     private final UserService userService;

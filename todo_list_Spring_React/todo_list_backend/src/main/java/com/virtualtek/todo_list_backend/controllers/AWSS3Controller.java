@@ -17,7 +17,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 @RestController
 @RequestMapping("api/s3/")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://virtualtek-todolist.azurewebsites.net/")
 public class AWSS3Controller {
     private final AWSS3Service awss3Service;
 
