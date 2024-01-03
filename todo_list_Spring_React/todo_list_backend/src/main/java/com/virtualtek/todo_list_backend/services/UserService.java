@@ -7,6 +7,8 @@ import com.virtualtek.todo_list_backend.model.repositories.User_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserService {
 //@Autowired
@@ -14,6 +16,11 @@ public class UserService {
 
     public UserService(User_repository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public ArrayList<User> getAllUsers()
+    {
+        return (ArrayList<User>) userRepository.findAll();
     }
 
     public User registerNewUser(User newUser)
