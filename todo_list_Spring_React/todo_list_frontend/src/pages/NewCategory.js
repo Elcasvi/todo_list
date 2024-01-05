@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocalState } from '../util/useLocalStorage';
+import {BASE_URL} from "../../config";
 
 export default function NewCategory() {
   const[errorMessage,setErrorMessage]=useState("")
@@ -38,7 +39,7 @@ export default function NewCategory() {
     newCategory.category=category.categoryName
     newCategory.user=category.user
 
-    await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/newCategory`,newCategory)
+    await axios.post(BASE_URL+`/api/newCategory`,newCategory)
     .then((response)=>
       {
         setErrorMessage("")

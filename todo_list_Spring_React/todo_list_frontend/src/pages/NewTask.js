@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
+import {BASE_URL} from "../../config";
 
 export default function NewTask() {
 
@@ -51,7 +52,7 @@ const[task,setTask]=useState(
 
   const getCategory=async()=>
   {
-    const res=await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
+    const res=await axios.post(BASE_URL+`/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
     setCategory(res.data)
   }
 
@@ -87,7 +88,7 @@ const[task,setTask]=useState(
     formData.append('file',file)
     await axios(
       {
-        url:"https://appservicetodolistbackend.azurewebsites.net/api/s3/uploadFile",
+        url:BASE_URL+"/api/s3/uploadFile",
         method:"POST",
         data:formData
       }
@@ -128,7 +129,7 @@ const[task,setTask]=useState(
 
       console.log("setingTask:")
       console.log(setingTask)
-      axios.post("https://appservicetodolistbackend.azurewebsites.net/api/newTask",setingTask)
+      axios.post(BASE_URL+"/api/newTask",setingTask)
       .then((response)=>
       {
         console.log(response.data)

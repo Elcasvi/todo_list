@@ -5,6 +5,7 @@ import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
+import {BASE_URL} from "../../config";
 
 export default function Dashboard() {
 
@@ -51,7 +52,7 @@ export default function Dashboard() {
 
   const getAllCategories=async()=>
   {
-    await axios.post(`http://localhost:8080/api/getAllCategoriesByUser`,user)
+    await axios.post(BASE_URL+`/api/getAllCategoriesByUser`,user)
     .then((response)=>
       {
         setErrorMessage("")
@@ -65,7 +66,7 @@ export default function Dashboard() {
   }
   const getCategory=async()=>
   {
-    await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
+    await axios.post(BASE_URL+`/api/findCategoryByCategoryAndUser/${categoryGiven}`,user)
     .then((response)=>
       {
         setErrorMessage("")
@@ -81,7 +82,7 @@ export default function Dashboard() {
 
     const getAllTasksByCategory=async()=>
     {
-      await axios.post(`https://appservicetodolistbackend.azurewebsites.net/api/getAllTasksByCategory`,category)
+      await axios.post(BASE_URL+`/api/getAllTasksByCategory`,category)
     .then((response)=>
     {
      console.log(response.data)

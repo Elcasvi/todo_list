@@ -5,6 +5,7 @@ import { useLocalState } from '../util/useLocalStorage';
 import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
+import {BASE_URL} from "../../config";
 
 export default function DeleteCategories() {
     const[user,setUser]=useLocalState(
@@ -25,7 +26,7 @@ export default function DeleteCategories() {
     
     const getCategories=async()=>
     {
-        await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/getAllCategoriesByUser",user)
+        await axios.post(BASE_URL+"/api/getAllCategoriesByUser",user)
          .then((response)=>
         {
           setErrorMessage("")
@@ -41,7 +42,7 @@ export default function DeleteCategories() {
 
     const deleteCategory=async(selectedCategory)=>
     {
-        await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/deleteCategory",selectedCategory)
+        await axios.post(BASE_URL+"/api/deleteCategory",selectedCategory)
          .then((response)=>
         {
           setErrorMessage("")

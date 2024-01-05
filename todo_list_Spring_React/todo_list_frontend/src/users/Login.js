@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
 import { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import {BASE_URL} from "../../config";
 export default function Login() {
     const [user,setUser]=useLocalState(
     {
@@ -28,7 +29,7 @@ export default function Login() {
   
   const getUser=()=>
   {
-    axios.post("https://appservicetodolistbackend.azurewebsites.net/api/login",user)
+    axios.post(BASE_URL+"/api/login",user)
     .then((response)=>
     {
       setErrorMessage("")

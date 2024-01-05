@@ -4,6 +4,7 @@ import { useLocalState } from '../util/useLocalStorage';
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Button } from 'bootstrap';
+import {BASE_URL} from "../../config";
 
 export default function Register() {
   const[saveUserVar,setSaveUserVar]=useState(false);
@@ -42,7 +43,7 @@ export default function Register() {
   
   const saveUser=()=>
   {
-    axios.post("https://appservicetodolistbackend.azurewebsites.net/api/register",user)
+    axios.post(BASE_URL+"/api/register",user)
     .then((response)=>
     {
       console.log(response.data)
@@ -68,7 +69,7 @@ export default function Register() {
       user:user
     }
     
-    await axios.post("https://appservicetodolistbackend.azurewebsites.net/api/newCategory",category)
+    await axios.post(BASE_URL+"/api/newCategory",category)
     .then((response)=>
     {
       console.log(response.data)
