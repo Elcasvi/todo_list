@@ -4,7 +4,7 @@ import { useLocalState } from '../util/useLocalStorage';
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Button } from 'bootstrap';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 
 export default function Register() {
   const[saveUserVar,setSaveUserVar]=useState(false);

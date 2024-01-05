@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 
 export default function NewTask() {
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocalState } from '../util/useLocalStorage';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 
 export default function NewCategory() {
   const[errorMessage,setErrorMessage]=useState("")

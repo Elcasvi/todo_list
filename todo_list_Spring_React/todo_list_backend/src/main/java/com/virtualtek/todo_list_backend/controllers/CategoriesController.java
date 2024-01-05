@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("https://virtualtek-todolist.azurewebsites.net/")
 public class CategoriesController {
     private final CategoryService categoryService;
 

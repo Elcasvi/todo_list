@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocalState } from '../util/useLocalStorage';
 import { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 export default function Login() {
     const [user,setUser]=useLocalState(
     {

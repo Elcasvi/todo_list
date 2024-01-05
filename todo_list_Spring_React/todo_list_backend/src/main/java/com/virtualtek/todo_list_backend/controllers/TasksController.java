@@ -10,7 +10,6 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin("https://virtualtek-todolist.azurewebsites.net/")
 public class TasksController {
 
     private final TaskService taskService;

@@ -5,7 +5,7 @@ import { useLocalState } from '../util/useLocalStorage';
 import { Link, useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 
 export default function Dashboard() {
 

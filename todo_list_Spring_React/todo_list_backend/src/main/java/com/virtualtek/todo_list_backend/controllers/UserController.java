@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 
 @RestController
-@CrossOrigin("https://virtualtek-todolist.azurewebsites.net/")
 public class UserController {
 
     private final UserService userService;

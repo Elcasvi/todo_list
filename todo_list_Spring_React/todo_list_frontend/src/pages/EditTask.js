@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Container  } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import {BASE_URL} from "../../config";
+import {BASE_URL} from "../config";
 
 export default function EditTask() {
 
